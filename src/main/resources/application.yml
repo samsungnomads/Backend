@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+spring:
+  profiles:
+    active: local # 🔍 기본 프로파일 설정
+
+  jpa:
+    open-in-view: false
+
+
+#설정 설명 출력 위치 로그 포맷
+#hibernate.use_sql_comments: true, 쿼리 위에 무슨 일을 위해 쿼리를 날리는지 주석을 출력, 로거 (Logger), Hibernate 가 만든 주석
+#show-sql: true, 실제 실행되는 SQL 쿼리를 콘솔에 출력, System.out (표준 출력), SQL 만 나옴

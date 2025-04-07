@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/wheretogo
+    username: root
+    password: root
+
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: update # 🔄 스키마 자동 업데이트
+        format_sql: true # 🧹 SQL 쿼리 포맷팅
+        use_sql_comments: true # 💬 SQL 주석 활성화
+    show-sql: true # 📝 SQL 쿼리 출력

@@ -55,3 +55,18 @@ jobs:
 
       - name: Push Docker image to ECR
         run: docker push ${{ secrets.ECR_URI }}:latest
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
+          username: ${{ secrets.EC2_USERNAME }}
+          script: |
+            aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
+
+            cd /home/ubuntu/wheretogo
+
+            docker compose down
+            docker compose pull
+            docker compose up -d

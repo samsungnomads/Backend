@@ -47,7 +47,7 @@ jobs:
 
       - name: Build, tag Docker image
         run: |
-          docker build -t wheretogo .
+          docker build -t wheretogo/backend .
           docker tag wheretogo/backend:latest ${{ secrets.ECR_URI }}:latest
 
       - name: Delete latest image from ECR

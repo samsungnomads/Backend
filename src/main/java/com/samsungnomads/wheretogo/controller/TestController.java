@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/test")
 public class TestController implements TestControllerDocs {
 
-    @GetMapping("/")
+    @GetMapping("")
     public String test() {
         return "Test Endpoint";
     }

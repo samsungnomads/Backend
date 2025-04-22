@@ -5,6 +5,8 @@ spring:
   profiles:
     active: local # 🔍 기본 프로파일 설정
 
+
+# 기본값이 true 이며, 트렌잭션이 끝나도 Entity 가 View 까지 살아있음 -> DTO로 저장하여 쓰셈
   jpa:
     open-in-view: false
 

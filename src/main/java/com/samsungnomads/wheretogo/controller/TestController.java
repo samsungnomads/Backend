@@ -1,13 +1,16 @@
 package com.samsungnomads.wheretogo.controller;
 
+import com.samsungnomads.wheretogo.docs.TestControllerDocs;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class TestController {
+@RequestMapping("api/test")
+public class TestController implements TestControllerDocs {
 
-    @GetMapping("/test")
+    @GetMapping("/")
     public String test() {
-        return "Server is running!!!!";
+        return "Test Endpoint";
     }
 }

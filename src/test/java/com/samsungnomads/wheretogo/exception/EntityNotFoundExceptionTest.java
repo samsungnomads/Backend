@@ -85,6 +85,6 @@ class EntityNotFoundExceptionTest {
         EntityNotFoundException exception = new EntityNotFoundException("엔티티를 찾을 수 없습니다");
         
         // when & then
-        assertTrue(exception instanceof BusinessException);
+        assertInstanceOf(BusinessException.class, exception);
     }
 } 

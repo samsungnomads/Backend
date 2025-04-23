@@ -84,7 +84,7 @@ class ErrorResponseTest {
         assertEquals(2, response.getErrors().size());
         
         // 첫 번째 필드 오류 검증
-        assertEquals("email", response.getErrors().get(0).getField());
+        assertEquals("email", response.getErrors().getFirst().getField());
         assertEquals("test@", response.getErrors().get(0).getValue());
         assertEquals("이메일 형식이 올바르지 않습니다", response.getErrors().get(0).getReason());
         

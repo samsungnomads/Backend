@@ -13,4 +13,9 @@ public class TestController implements TestControllerDocs {
     public String test() {
         return "Test Endpoint";
     }
+
+    @GetMapping("123")
+    public String test123() {
+        return "Test Endpoint";
+    }
 }

@@ -18,7 +18,7 @@ public class TestController implements TestControllerDocs {
 
     @GetMapping("/success-with-data")
     public ResponseEntity<SuccessResponse<TestResponseDto>> successWithData() {
-        TestResponseDto testResponseDto = new TestResponseDto("테스트 메시지", 100);
+        TestResponseDto testResponseDto = new TestResponseDto("테스트 메시지 입니다", 123);
         return SuccessResponse.of(SuccessCode.OK, testResponseDto);
     }
 

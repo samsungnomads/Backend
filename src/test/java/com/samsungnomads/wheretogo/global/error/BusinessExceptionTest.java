@@ -1,6 +1,5 @@
-package com.samsungnomads.wheretogo.exception;
+package com.samsungnomads.wheretogo.global.error;
 
-import com.samsungnomads.wheretogo.global.error.ErrorCode;
 import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

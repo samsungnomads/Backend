@@ -1,6 +1,5 @@
-package com.samsungnomads.wheretogo.exception;
+package com.samsungnomads.wheretogo.global.error;
 
-import com.samsungnomads.wheretogo.global.error.GlobalExceptionHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

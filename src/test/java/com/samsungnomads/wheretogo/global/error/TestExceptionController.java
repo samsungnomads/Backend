@@ -1,6 +1,5 @@
-package com.samsungnomads.wheretogo.exception;
+package com.samsungnomads.wheretogo.global.error;
 
-import com.samsungnomads.wheretogo.global.error.ErrorCode;
 import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
 import com.samsungnomads.wheretogo.global.error.exception.EntityNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;

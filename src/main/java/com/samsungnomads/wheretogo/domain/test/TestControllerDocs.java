@@ -1,6 +1,7 @@
 package com.samsungnomads.wheretogo.domain.test;
 
 
+import com.samsungnomads.wheretogo.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -12,15 +13,33 @@ import org.springframework.http.ResponseEntity;
 @Tag(name = "Test", description = "테스트 API")
 public interface TestControllerDocs {
 
-    @Operation(summary = "Test API", description = "Test API 입니다.")
+    @Operation(
+            summary = "성공 테스트 API",
+            description = "데이터 없이 성공 응답만 반환합니다. (data = null)"
+    )
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "서버 정상",
+                    description = "요청 성공",
                     content = @Content(
-                            mediaType = "text/plain",
+                            mediaType = "application/json",
                             schema = @Schema(example = "Test Endpoint"))
             )
     })
-    public ResponseEntity<SuccessResponse> test();
+    public ResponseEntity<SuccessResponse> success();
+
+    @Operation(
+            summary = "성공 테스트 API (데이터 포함)",
+            description = "임시로 만든 테스트 데이터를 포함하여 성공 응답을 반환합니다. "
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "요청 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(example = "Test Endpoint"))
+            )
+    })
+    public ResponseEntity<SuccessResponse<TestResponseDto>> successWithData();
 }

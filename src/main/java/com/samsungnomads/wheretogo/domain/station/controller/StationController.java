@@ -7,6 +7,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/station")
 @RequiredArgsConstructor
-public class StationController {
-
+public class StationController implements StationControllerDocs {
 }

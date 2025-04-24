@@ -1,5 +1,6 @@
 package com.samsungnomads.wheretogo.exception;
 
+import com.samsungnomads.wheretogo.global.error.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -20,43 +21,43 @@ class ErrorCodeTest {
         assertEquals(HttpStatus.METHOD_NOT_ALLOWED, ErrorCode.METHOD_NOT_ALLOWED.getStatus());
         assertEquals(HttpStatus.NOT_FOUND, ErrorCode.ENTITY_NOT_FOUND.getStatus());
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_SERVER_ERROR.getStatus());
-        
+
         // 회원 관련 오류 검증
         assertEquals(HttpStatus.CONFLICT, ErrorCode.EMAIL_DUPLICATION.getStatus());
         assertEquals(HttpStatus.NOT_FOUND, ErrorCode.MEMBER_NOT_FOUND.getStatus());
         assertEquals(HttpStatus.UNAUTHORIZED, ErrorCode.INVALID_PASSWORD.getStatus());
-        
+
         // 필터 관련 오류 검증
         assertEquals(HttpStatus.NOT_FOUND, ErrorCode.FILTER_NOT_FOUND.getStatus());
-        
+
         // 역 관련 오류 검증
         assertEquals(HttpStatus.NOT_FOUND, ErrorCode.STATION_NOT_FOUND.getStatus());
     }
-    
+
     @Test
     @DisplayName("모든 ErrorCode는 고유한 코드 값을 가진다")
     void errorCodeShouldHaveUniqueCode() {
         // given
         ErrorCode[] errorCodes = ErrorCode.values();
-        
+
         // when & then
         for (int i = 0; i < errorCodes.length; i++) {
             for (int j = i + 1; j < errorCodes.length; j++) {
                 assertNotEquals(
-                    errorCodes[i].getCode(), 
-                    errorCodes[j].getCode(),
-                    String.format("%s와 %s의 코드 값이 중복됩니다", errorCodes[i], errorCodes[j])
+                        errorCodes[i].getCode(),
+                        errorCodes[j].getCode(),
+                        String.format("%s와 %s의 코드 값이 중복됩니다", errorCodes[i], errorCodes[j])
                 );
             }
         }
     }
-    
+
     @Test
     @DisplayName("모든 ErrorCode는 메시지를 가진다")
     void errorCodeShouldHaveMessage() {
         // given
         ErrorCode[] errorCodes = ErrorCode.values();
-        
+
         // when & then
         for (ErrorCode errorCode : errorCodes) {
             assertNotNull(errorCode.getMessage());

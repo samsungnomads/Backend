@@ -1,5 +1,9 @@
 package com.samsungnomads.wheretogo.exception;
 
+import com.samsungnomads.wheretogo.global.error.ErrorCode;
+import com.samsungnomads.wheretogo.global.error.ErrorResponse;
+import com.samsungnomads.wheretogo.global.error.GlobalExceptionHandler;
+import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +19,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import java.nio.file.AccessDeniedException;
 import java.util.Collections;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -57,8 +62,8 @@ class GlobalExceptionHandlerTest {
         MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
         BindingResult bindingResult = mock(BindingResult.class);
 
-        FieldError fieldError = new FieldError("memberDto", "email", "test@", 
-                                              false, null, null, "이메일 형식이 올바르지 않습니다");
+        FieldError fieldError = new FieldError("memberDto", "email", "test@",
+                false, null, null, "이메일 형식이 올바르지 않습니다");
         when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(fieldError));
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
@@ -83,8 +88,8 @@ class GlobalExceptionHandlerTest {
         BindException exception = mock(BindException.class);
         BindingResult bindingResult = mock(BindingResult.class);
 
-        FieldError fieldError = new FieldError("memberDto", "age", "abc", 
-                                              false, null, null, "숫자 형식이어야 합니다");
+        FieldError fieldError = new FieldError("memberDto", "age", "abc",
+                false, null, null, "숫자 형식이어야 합니다");
         when(bindingResult.getFieldErrors()).thenReturn(Collections.singletonList(fieldError));
         when(exception.getBindingResult()).thenReturn(bindingResult);
 
@@ -127,7 +132,7 @@ class GlobalExceptionHandlerTest {
         MethodArgumentTypeMismatchException exception = mock(MethodArgumentTypeMismatchException.class);
         when(exception.getName()).thenReturn("age");
         when(exception.getValue()).thenReturn("abc");
-        
+
         // when
         ResponseEntity<ErrorResponse> response = handler.handleMethodArgumentTypeMismatchException(exception);
 

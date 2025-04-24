@@ -1,4 +1,4 @@
 package com.samsungnomads.wheretogo.domain.filter.repository;
 
-public class FilterServiceRepository {
+public class FilterStationRepository {
 }

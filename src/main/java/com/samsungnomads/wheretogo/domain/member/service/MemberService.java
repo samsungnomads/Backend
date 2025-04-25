@@ -72,7 +72,7 @@ public class MemberService {
         return memberRepository.findById(id)
                 .orElseThrow(() -> EntityNotFoundException.memberNotFound(id.toString()));
     }
-    
+
     /**
      * 회원 로그인 아이디로 회원 조회
      * 🔍 회원 로그인 아이디로 특정 회원 정보 조회

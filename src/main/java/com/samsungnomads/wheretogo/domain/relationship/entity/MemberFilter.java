@@ -1,12 +1,9 @@
 package com.samsungnomads.wheretogo.domain.relationship.entity;
 
-import com.samsungnomads.wheretogo.domain.filter.entity.Filter;
 import com.samsungnomads.wheretogo.domain.member.entity.Member;
+import com.samsungnomads.wheretogo.domain.filter.entity.Filter;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 /**
  * 회원-필터 매핑 엔티티
@@ -14,36 +11,31 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Table(name = "member_filter")
-@IdClass(MemberFilterId.class)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberFilter {
 
-    @Id
-    @Column(name = "member_id", insertable = false, updatable = false)
-    private Long memberId; // 👤 회원 ID 값 (중복 필드)
+    @EmbeddedId
+    private MemberFilterId id; // 🔑 복합 기본 키
     
-    @Id
-    @Column(name = "filter_id", insertable = false, updatable = false)
-    private Long filterId; // 🔍 필터 ID 값 (중복 필드)
-    
+    @MapsId("memberId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", referencedColumnName = "id")
-    private Member member; // 👤 회원 참조
-    
+    @JoinColumn(name = "member_id")
+    private Member member; // 👤 관련 회원 정보
+
+    @MapsId("filterId")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "filter_id", referencedColumnName = "id")
-    private Filter filter; // 🔗 필터 참조
-    
+    @JoinColumn(name = "filter_id")
+    private Filter filter; // 🔍 관련 필터 정보
+
     /**
      * 회원-필터 관계 생성
      * 📝 회원과 필터를 연결
      */
     @Builder
     public MemberFilter(Member member, Filter filter) {
+        this.id = new MemberFilterId(member.getId(), filter.getId());
         this.member = member;
         this.filter = filter;
-        this.memberId = member.getId();
-        this.filterId = filter.getId();
     }
 } 

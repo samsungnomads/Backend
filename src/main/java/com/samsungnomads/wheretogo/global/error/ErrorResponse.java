@@ -1,5 +1,7 @@
 package com.samsungnomads.wheretogo.global.error;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,98 +14,118 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * API 에러 응답 DTO
- * 📄 클라이언트에게 전달할 에러 정보 구조
+ * 에러 응답 클래스
+ * 🚨 API 에러 응답에 대한 표준 포맷 제공
  */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Schema(description = "에러 응답 공통 형식")
 public class ErrorResponse {
 
-    private final LocalDateTime timestamp = LocalDateTime.now(); // ⏱️ 에러 발생 시간
-    private String code; // 🔢 에러 코드 
-    private String message; // 📝 에러 메시지
-    private int status; // 🔍 HTTP 상태 코드
-    private List<FieldError> errors; // 🧾 필드 에러 목록
+    @Schema(description = "응답 코드", example = "400")
+    private int status;
+    
+    @Schema(description = "에러 코드", example = "C001")
+    private String code;
+    
+    @Schema(description = "에러 메시지", example = "잘못된 입력값입니다")
+    private String message;
+    
+    @Schema(description = "상세 에러 정보")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<FieldError> errors;
 
     /**
-     * 기본 에러 응답 생성
-     * 🏭 에러 코드 기반으로 응답 생성
+     * 에러 응답 생성 (ErrorCode 기반)
+     * 🔍 ErrorCode를 기반으로 에러 응답 생성
      */
-    private ErrorResponse(final ErrorCode errorCode) {
-        this.message = errorCode.getMessage();
-        this.status = errorCode.getStatus().value();
-        this.code = errorCode.getCode();
-        this.errors = new ArrayList<>();
+    public static ErrorResponse of(ErrorCode errorCode) {
+        return new ErrorResponse(errorCode.getStatus().value(), errorCode.getCode(), errorCode.getMessage());
     }
 
     /**
-     * 필드 에러가 있는 응답 생성
-     * 📋 유효성 검사 오류 등의 필드 오류 포함
+     * 에러 응답 생성 (ErrorCode, 메시지 기반)
+     * 🔍 ErrorCode와 사용자 정의 메시지 기반으로 에러 응답 생성
      */
-    private ErrorResponse(final ErrorCode errorCode, final List<FieldError> errors) {
-        this.message = errorCode.getMessage();
-        this.status = errorCode.getStatus().value();
-        this.code = errorCode.getCode();
-        this.errors = errors;
+    public static ErrorResponse of(ErrorCode errorCode, String message) {
+        return new ErrorResponse(errorCode.getStatus().value(), errorCode.getCode(), message);
     }
 
     /**
-     * ErrorCode만 있는 에러의 응답 생성
-     * 🛠️ 비즈니스 예외 등의 응답 생성
+     * 입력 값 검증 에러 응답 생성
+     * 🔍 BindingResult에서 발생한 검증 오류를 포함한 에러 응답 생성
      */
-    public static ErrorResponse of(final ErrorCode errorCode) {
-        return new ErrorResponse(errorCode);
-    }
-
-    /**
-     * BindingResult 에러 응답 생성
-     * 🧩 폼 유효성 검사 오류 응답 생성
-     */
-    public static ErrorResponse of(final ErrorCode errorCode, final BindingResult bindingResult) {
-        return new ErrorResponse(errorCode, FieldError.of(bindingResult));
+    public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult) {
+        return new ErrorResponse(errorCode.getStatus().value(), errorCode.getCode(), errorCode.getMessage(), FieldError.of(bindingResult));
     }
 
     /**
      * 타입 불일치 에러 응답 생성
-     * 🔄 타입 변환 실패 오류 응답
+     * 🔍 MethodArgumentTypeMismatchException에서 발생한 오류를 포함한 에러 응답 생성
      */
-    public static ErrorResponse of(final ErrorCode errorCode, final MethodArgumentTypeMismatchException e) {
-        final String value = e.getValue() == null ? "" : e.getValue().toString();
-        final List<FieldError> errors = FieldError.of(e.getName(), value, e.getErrorCode());
-        return new ErrorResponse(errorCode, errors);
+    public static ErrorResponse of(ErrorCode errorCode, MethodArgumentTypeMismatchException e) {
+        String value = e.getValue() == null ? "" : e.getValue().toString();
+        List<FieldError> errors = List.of(FieldError.of(e.getName(), value, e.getErrorCode()));
+        return new ErrorResponse(errorCode.getStatus().value(), errorCode.getCode(), errorCode.getMessage(), errors);
+    }
+
+    private ErrorResponse(int status, String code, String message) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
+        this.errors = new ArrayList<>();
+    }
+
+    private ErrorResponse(int status, String code, String message, List<FieldError> errors) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
+        this.errors = errors;
     }
 
     /**
-     * 필드 에러 DTO
-     * 📄 특정 필드의 에러 정보 표현
+     * 필드 에러 정보
+     * 🚨 각 필드의 유효성 검증 오류 정보
      */
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Schema(description = "필드 에러 정보")
     public static class FieldError {
-        private String field; // 🔤 필드명
-        private String value; // 💯 입력값
-        private String reason; // ❓ 오류 이유
+        @Schema(description = "오류가 발생한 필드명", example = "email")
+        private String field;
+        
+        @Schema(description = "오류가 발생한 값", example = "invalid-email")
+        private String value;
+        
+        @Schema(description = "오류 메시지", example = "유효한 이메일 형식이 아닙니다")
+        private String reason;
 
-        private FieldError(final String field, final String value, final String reason) {
+        private FieldError(String field, String value, String reason) {
             this.field = field;
             this.value = value;
             this.reason = reason;
         }
 
-        public static List<FieldError> of(final String field, final String value, final String reason) {
-            List<FieldError> fieldErrors = new ArrayList<>();
-            fieldErrors.add(new FieldError(field, value, reason));
-            return fieldErrors;
-        }
-
-        private static List<FieldError> of(final BindingResult bindingResult) {
-            final List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
+        /**
+         * BindingResult로부터 필드 에러 목록 생성
+         * 🔍 입력 값 검증에서 발생한 모든 필드 에러 정보 추출
+         */
+        public static List<FieldError> of(BindingResult bindingResult) {
+            List<org.springframework.validation.FieldError> fieldErrors = bindingResult.getFieldErrors();
             return fieldErrors.stream()
                     .map(error -> new FieldError(
                             error.getField(),
                             error.getRejectedValue() == null ? "" : error.getRejectedValue().toString(),
                             error.getDefaultMessage()))
                     .collect(Collectors.toList());
+        }
+
+        /**
+         * 단일 필드 에러 생성
+         * 🔍 단일 필드에 대한 에러 정보 생성
+         */
+        public static FieldError of(String field, String value, String reason) {
+            return new FieldError(field, value, reason);
         }
     }
 } 

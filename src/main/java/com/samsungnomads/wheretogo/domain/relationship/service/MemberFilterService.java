@@ -41,8 +41,8 @@ public class MemberFilterService {
      * 회원의 모든 필터 관계 조회
      * 🔍 특정 회원이 접근 가능한 모든 필터 관계 조회
      */
-    public List<MemberFilter> findFiltersByMember(Long uid) {
-        return memberFilterRepository.findByMemberUid(uid);
+    public List<MemberFilter> findFiltersByMember(Long memberId) {
+        return memberFilterRepository.findByMemberId(memberId);
     }
     
     /**
@@ -57,8 +57,8 @@ public class MemberFilterService {
      * 특정 회원-필터 관계 조회
      * 🔍 특정 회원과 필터 간의 관계 조회
      */
-    public Optional<MemberFilter> findMemberFilterRelationship(Long uid, Long filterId) {
-        MemberFilterId id = new MemberFilterId(uid, filterId);
+    public Optional<MemberFilter> findMemberFilterRelationship(Long memberId, Long filterId) {
+        MemberFilterId id = new MemberFilterId(memberId, filterId);
         return memberFilterRepository.findById(id);
     }
     
@@ -67,8 +67,8 @@ public class MemberFilterService {
      * 🗑️ 회원과 필터 간의 관계 제거
      */
     @Transactional
-    public void deleteMemberFilterRelationship(Long uid, Long filterId) {
-        MemberFilterId id = new MemberFilterId(uid, filterId);
+    public void deleteMemberFilterRelationship(Long memberId, Long filterId) {
+        MemberFilterId id = new MemberFilterId(memberId, filterId);
         memberFilterRepository.deleteById(id);
     }
     
@@ -76,7 +76,7 @@ public class MemberFilterService {
      * 회원-필터 관계 확인
      * ✅ 특정 회원이 특정 필터에 접근 가능한지 확인
      */
-    public boolean hasMemberFilterRelationship(Long uid, Long filterId) {
-        return memberFilterRepository.existsByMemberUidAndFilterId(uid, filterId);
+    public boolean hasMemberFilterRelationship(Long memberId, Long filterId) {
+        return memberFilterRepository.existsByMemberIdAndFilterId(memberId, filterId);
     }
 } 

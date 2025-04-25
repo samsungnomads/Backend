@@ -4,6 +4,7 @@ import com.samsungnomads.wheretogo.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -14,10 +15,40 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     
     /**
-     * 아이디로 회원 조회
-     * 🔍 고유한 회원 아이디로 회원 정보 조회
+     * ID(PK)로 회원 조회
+     * 🔑 데이터베이스 기본키로 회원 정보 조회
      */
-    Optional<Member> findById(String id);
+    Optional<Member> findById(Long id);
+    
+    /**
+     * ID(PK) 존재 여부 확인
+     * 🔑 기본키 기준으로 회원 존재 여부 확인
+     */
+    boolean existsById(Long id);
+    
+    /**
+     * ID(PK)로 회원 삭제
+     * 🗑️ 기본키 기준으로 회원 삭제
+     */
+    void deleteById(Long id);
+    
+    /**
+     * ID(PK) 목록으로 회원 조회
+     * 🔍 여러 기본키로 회원 목록 조회
+     */
+    List<Member> findAllByIdIn(List<Long> ids);
+    
+    /**
+     * 모든 회원 조회
+     * 📋 전체 회원 목록 조회
+     */
+    List<Member> findAll();
+    
+    /**
+     * 로그인 아이디로 회원 조회
+     * 🔍 고유한 회원 로그인 아이디로 회원 정보 조회
+     */
+    Optional<Member> findByLoginId(String loginId);
     
     /**
      * 이메일로 회원 조회
@@ -26,10 +57,10 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String email);
     
     /**
-     * 아이디 존재 여부 확인
-     * ✅ 특정 아이디가 이미 사용 중인지 확인
+     * 로그인 아이디 존재 여부 확인
+     * ✅ 특정 로그인 아이디가 이미 사용 중인지 확인
      */
-    boolean existsById(String id);
+    boolean existsByLoginId(String loginId);
     
     /**
      * 이메일 존재 여부 확인

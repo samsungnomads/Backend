@@ -71,7 +71,7 @@ public interface MemberControllerDocs {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<ApiResponse<MemberResponse>> getMember(
-            @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long uid);
+            @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long id);
 
     /**
      * 회원 등록
@@ -168,7 +168,7 @@ public interface MemberControllerDocs {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<ApiResponse<Void>> updateMember(
-            @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long uid,
+            @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long id,
             @Parameter(description = "회원 수정 정보", required = true, 
                     schema = @Schema(implementation = MemberUpdateRequest.class)) 
             @Valid @RequestBody MemberUpdateRequest request);
@@ -196,5 +196,5 @@ public interface MemberControllerDocs {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     ResponseEntity<ApiResponse<Void>> deleteMember(
-            @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long uid);
+            @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long id);
 }

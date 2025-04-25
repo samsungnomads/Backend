@@ -32,7 +32,7 @@ public class Member {
     @Column(name = "id")
     private Long id; // 🔑 회원 기본 키 (AUTO INCREMENT)
     
-    @Column(name = "login_id", unique = true)
+    @Column(name = "login_id", nullable = false, unique = true)
     private String loginId; // 🆔 회원 로그인 아이디
     
     @Column(name = "email", nullable = false, unique = true)

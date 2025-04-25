@@ -31,7 +31,7 @@ public class Station {
     @Column(name = "line", length = 50)
     private String line; // 🚇 노선명
     
-    @Column(name = "adress")
+    @Column(name = "address")
     private String address; // 📍 주소 정보
     
     @CreationTimestamp

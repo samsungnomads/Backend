@@ -20,6 +20,7 @@ import lombok.NoArgsConstructor;
 public class MemberFilter {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", insertable = false, updatable = false)
     private Long memberId; // 👤 회원 ID 값 (중복 필드)
     

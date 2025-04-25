@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 @Schema(description = "회원 생성 요청")
 public class MemberCreateRequest {
 
-    @Schema(description = "회원 아이디", example = "hong123")
-    @NotBlank(message = "아이디는 필수 입력값입니다")
-    @Size(min = 4, max = 20, message = "아이디는 4~20자 사이어야 합니다")
-    @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "아이디는 영문자, 숫자, 언더스코어만 허용됩니다")
-    private String id;
+    @Schema(description = "회원 로그인 아이디", example = "hong123")
+    @NotBlank(message = "로그인 아이디는 필수 입력값입니다")
+    @Size(min = 4, max = 20, message = "로그인 아이디는 4~20자 사이어야 합니다")
+    @Pattern(regexp = "^[a-zA-Z0-9_]*$", message = "로그인 아이디는 영문자, 숫자, 언더스코어만 허용됩니다")
+    private String loginId;
 
     @Schema(description = "회원 이메일", example = "user@example.com")
     @NotBlank(message = "이메일은 필수 입력값입니다")
@@ -48,8 +48,8 @@ public class MemberCreateRequest {
      * 🏗️ 회원 생성 요청 객체 생성
      */
     @Builder
-    public MemberCreateRequest(String id, String email, String password, String nickname) {
-        this.id = id;
+    public MemberCreateRequest(String loginId, String email, String password, String nickname) {
+        this.loginId = loginId;
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -61,7 +61,7 @@ public class MemberCreateRequest {
      */
     public Member toEntity() {
         return Member.builder()
-                .id(id)
+                .loginId(loginId)
                 .email(email)
                 .password(password)
                 .nickname(nickname)

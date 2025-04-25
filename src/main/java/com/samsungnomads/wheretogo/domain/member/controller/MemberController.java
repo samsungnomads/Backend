@@ -46,10 +46,10 @@ public class MemberController implements MemberControllerDocs {
      * 회원 상세 조회
      * 🔍 특정 회원의 상세 정보를 조회합니다.
      */
-    @GetMapping("/{uid}")
+    @GetMapping("/{id}")
     @Override
-    public ResponseEntity<ApiResponse<MemberResponse>> getMember(@PathVariable Long uid) {
-        Member member = memberService.findOne(uid);
+    public ResponseEntity<ApiResponse<MemberResponse>> getMember(@PathVariable Long id) {
+        Member member = memberService.findOne(id);
         return ResponseEntity.ok(ApiResponse.success(MemberResponse.of(member)));
     }
 
@@ -62,9 +62,9 @@ public class MemberController implements MemberControllerDocs {
     @Override
     public ResponseEntity<ApiResponse<Long>> createMember(@Valid @RequestBody MemberCreateRequest request) {
         // 아이디 중복 검사
-        if (!memberService.isIdAvailable(request.getId())) {
+        if (!memberService.isLoginIdAvailable(request.getLoginId())) {
             throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION, 
-                    String.format("이미 사용 중인 아이디입니다: %s", request.getId()));
+                    String.format("이미 사용 중인 아이디입니다: %s", request.getLoginId()));
         }
         
         // 이메일 중복 검사
@@ -74,22 +74,22 @@ public class MemberController implements MemberControllerDocs {
         }
         
         Member member = request.toEntity();
-        Long uid = memberService.join(member);
+        Long id = memberService.join(member);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(HttpStatus.CREATED, uid));
+                .body(ApiResponse.success(HttpStatus.CREATED, id));
     }
 
     /**
      * 회원 정보 수정
      * 🔄 기존 회원 정보를 수정합니다.
      */
-    @PutMapping("/{uid}")
+    @PutMapping("/{id}")
     @Override
     public ResponseEntity<ApiResponse<Void>> updateMember(
-            @PathVariable Long uid, 
+            @PathVariable Long id, 
             @Valid @RequestBody MemberUpdateRequest request) {
-        memberService.update(uid, request.getPassword(), request.getNickname());
+        memberService.update(id, request.getPassword(), request.getNickname());
         return ResponseEntity.ok(ApiResponse.success());
     }
 
@@ -97,11 +97,11 @@ public class MemberController implements MemberControllerDocs {
      * 회원 삭제
      * 🗑️ 기존 회원을 삭제합니다.
      */
-    @DeleteMapping("/{uid}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Override
-    public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable Long uid) {
-        memberService.delete(uid);
+    public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable Long id) {
+        memberService.delete(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .body(ApiResponse.success(HttpStatus.NO_CONTENT, null));

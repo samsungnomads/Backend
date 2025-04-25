@@ -73,9 +73,9 @@ class GlobalExceptionHandlerTest {
         assertNotNull(errorResponse);
         assertEquals(ErrorCode.INVALID_INPUT_VALUE.getCode(), errorResponse.getCode());
         assertEquals(1, errorResponse.getErrors().size());
-        assertEquals("email", errorResponse.getErrors().get(0).getField());
-        assertEquals("test@", errorResponse.getErrors().get(0).getValue());
-        assertEquals("이메일 형식이 올바르지 않습니다", errorResponse.getErrors().get(0).getReason());
+        assertEquals("email", errorResponse.getErrors().getFirst().getField());
+        assertEquals("test@", errorResponse.getErrors().getFirst().getValue());
+        assertEquals("이메일 형식이 올바르지 않습니다", errorResponse.getErrors().getFirst().getReason());
     }
 
     @Test
@@ -99,9 +99,9 @@ class GlobalExceptionHandlerTest {
         assertNotNull(errorResponse);
         assertEquals(ErrorCode.INVALID_INPUT_VALUE.getCode(), errorResponse.getCode());
         assertEquals(1, errorResponse.getErrors().size());
-        assertEquals("age", errorResponse.getErrors().get(0).getField());
-        assertEquals("abc", errorResponse.getErrors().get(0).getValue());
-        assertEquals("숫자 형식이어야 합니다", errorResponse.getErrors().get(0).getReason());
+        assertEquals("age", errorResponse.getErrors().getFirst().getField());
+        assertEquals("abc", errorResponse.getErrors().getFirst().getValue());
+        assertEquals("숫자 형식이어야 합니다", errorResponse.getErrors().getFirst().getReason());
     }
 
     @Test
@@ -139,7 +139,7 @@ class GlobalExceptionHandlerTest {
         assertNotNull(errorResponse);
         assertEquals(ErrorCode.INVALID_INPUT_VALUE.getCode(), errorResponse.getCode());
         assertEquals(1, errorResponse.getErrors().size());
-        assertEquals("age", errorResponse.getErrors().get(0).getField());
+        assertEquals("age", errorResponse.getErrors().getFirst().getField());
     }
 
     @Test

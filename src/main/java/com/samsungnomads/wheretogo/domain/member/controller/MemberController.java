@@ -1,13 +1,15 @@
 package com.samsungnomads.wheretogo.domain.member.controller;
 
 import com.samsungnomads.wheretogo.domain.member.dto.MemberCreateRequest;
+import com.samsungnomads.wheretogo.domain.member.dto.MemberIdResponse;
 import com.samsungnomads.wheretogo.domain.member.dto.MemberResponse;
 import com.samsungnomads.wheretogo.domain.member.dto.MemberUpdateRequest;
 import com.samsungnomads.wheretogo.domain.member.entity.Member;
 import com.samsungnomads.wheretogo.domain.member.service.MemberService;
-import com.samsungnomads.wheretogo.global.common.ApiResponse;
 import com.samsungnomads.wheretogo.global.error.ErrorCode;
 import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
+import com.samsungnomads.wheretogo.global.response.SuccessCode;
+import com.samsungnomads.wheretogo.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -34,12 +36,12 @@ public class MemberController implements MemberControllerDocs {
      */
     @GetMapping
     @Override
-    public ResponseEntity<ApiResponse<List<MemberResponse>>> getAllMembers() {
+    public ResponseEntity<SuccessResponse<List<MemberResponse>>> getAllMembers() {
         List<Member> members = memberService.findMembers();
         List<MemberResponse> responses = members.stream()
                 .map(MemberResponse::of)
                 .collect(Collectors.toList());
-        return ResponseEntity.ok(ApiResponse.success(responses));
+        return SuccessResponse.of(SuccessCode.OK, responses);
     }
 
     /**
@@ -48,19 +50,21 @@ public class MemberController implements MemberControllerDocs {
      */
     @GetMapping("/{id}")
     @Override
-    public ResponseEntity<ApiResponse<MemberResponse>> getMember(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse<MemberResponse>> getMember(@PathVariable Long id) {
         Member member = memberService.findOne(id);
-        return ResponseEntity.ok(ApiResponse.success(MemberResponse.of(member)));
+        return SuccessResponse.of(SuccessCode.OK, MemberResponse.of(member));
     }
 
     /**
      * 회원 등록
      * 📝 새로운 회원을 등록합니다.
+     * 🔑 등록 성공 시 시스템에서 자동 생성된 회원 ID(PK)를 반환합니다.
+     * 📢 이 ID는 Auto Increment로 생성되며 로그인 ID(loginId)와는 다른 값입니다.
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Override
-    public ResponseEntity<ApiResponse<Long>> createMember(@Valid @RequestBody MemberCreateRequest request) {
+    public ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(@Valid @RequestBody MemberCreateRequest request) {
         // 아이디 중복 검사
         if (!memberService.isLoginIdAvailable(request.getLoginId())) {
             throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION, 
@@ -75,9 +79,7 @@ public class MemberController implements MemberControllerDocs {
         
         Member member = request.toEntity();
         Long id = memberService.join(member);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(ApiResponse.success(HttpStatus.CREATED, id));
+        return SuccessResponse.of(SuccessCode.CREATED, MemberIdResponse.of(id));
     }
 
     /**
@@ -86,11 +88,11 @@ public class MemberController implements MemberControllerDocs {
      */
     @PutMapping("/{id}")
     @Override
-    public ResponseEntity<ApiResponse<Void>> updateMember(
+    public ResponseEntity<SuccessResponse> updateMember(
             @PathVariable Long id, 
             @Valid @RequestBody MemberUpdateRequest request) {
         memberService.update(id, request.getPassword(), request.getNickname());
-        return ResponseEntity.ok(ApiResponse.success());
+        return SuccessResponse.of(SuccessCode.UPDATED);
     }
 
     /**
@@ -100,10 +102,8 @@ public class MemberController implements MemberControllerDocs {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Override
-    public ResponseEntity<ApiResponse<Void>> deleteMember(@PathVariable Long id) {
+    public ResponseEntity<SuccessResponse> deleteMember(@PathVariable Long id) {
         memberService.delete(id);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body(ApiResponse.success(HttpStatus.NO_CONTENT, null));
+        return SuccessResponse.of(SuccessCode.DELETED);
     }
 }

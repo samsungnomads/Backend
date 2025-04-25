@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 @AllArgsConstructor
 public class SuccessResponse<T> {
 
-    @Schema(description = "상태 코드", example = "200")
+    @Schema(description = "상태 코드", example = "201")
     private final int status;
 
     @Schema(description = "상태 메시지", example = "요청이 성공했습니다.")

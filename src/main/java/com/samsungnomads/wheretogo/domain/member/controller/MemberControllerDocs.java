@@ -1,10 +1,11 @@
 package com.samsungnomads.wheretogo.domain.member.controller;
 
 import com.samsungnomads.wheretogo.domain.member.dto.MemberCreateRequest;
+import com.samsungnomads.wheretogo.domain.member.dto.MemberIdResponse;
 import com.samsungnomads.wheretogo.domain.member.dto.MemberResponse;
 import com.samsungnomads.wheretogo.domain.member.dto.MemberUpdateRequest;
-import com.samsungnomads.wheretogo.global.common.ApiResponse;
 import com.samsungnomads.wheretogo.global.error.ErrorResponse;
+import com.samsungnomads.wheretogo.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +34,7 @@ public interface MemberControllerDocs {
     @Operation(summary = "회원 목록 조회", description = "등록된 모든 회원 목록을 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", 
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class),
                     examples = @ExampleObject(
@@ -46,7 +47,7 @@ public interface MemberControllerDocs {
                                     "}"
                     )))
     })
-    ResponseEntity<ApiResponse<List<MemberResponse>>> getAllMembers();
+    ResponseEntity<SuccessResponse<List<MemberResponse>>> getAllMembers();
 
     /**
      * 회원 상세 조회
@@ -55,7 +56,7 @@ public interface MemberControllerDocs {
     @Operation(summary = "회원 상세 조회", description = "회원 ID로 특정 회원의 상세 정보를 조회합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공", 
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "회원 없음", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class),
                     examples = @ExampleObject(
@@ -70,17 +71,24 @@ public interface MemberControllerDocs {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<ApiResponse<MemberResponse>> getMember(
+    ResponseEntity<SuccessResponse<MemberResponse>> getMember(
             @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long id);
 
     /**
      * 회원 등록
      * 📝 새로운 회원을 등록합니다.
      */
-    @Operation(summary = "회원 등록", description = "새로운 회원 정보를 등록합니다.")
+    @Operation(
+        summary = "회원 등록", 
+        description = "새로운 회원 정보를 등록합니다. 응답으로 시스템에서 자동 생성된 회원 ID(PK)를 반환합니다. " +
+                     "이 ID는 Auto Increment 형식으로 생성되며, 회원의 로그인 ID(loginId)와는 다릅니다."
+    )
     @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "201", description = "등록 성공", 
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                responseCode = "201", 
+                description = "등록 성공 - 생성된 회원의 시스템 ID(PK)가 반환됨", 
+                content = @Content(schema = @Schema(implementation = SuccessResponse.class))
+            ),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class),
                     examples = @ExampleObject(
@@ -123,7 +131,7 @@ public interface MemberControllerDocs {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<ApiResponse<Long>> createMember(
+    ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(
             @Parameter(description = "회원 등록 정보", required = true, 
                     schema = @Schema(implementation = MemberCreateRequest.class)) 
             @Valid @RequestBody MemberCreateRequest request);
@@ -135,7 +143,7 @@ public interface MemberControllerDocs {
     @Operation(summary = "회원 정보 수정", description = "회원 ID로 기존 회원 정보를 수정합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "수정 성공", 
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class),
                     examples = @ExampleObject(
@@ -167,7 +175,7 @@ public interface MemberControllerDocs {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<ApiResponse<Void>> updateMember(
+    ResponseEntity<SuccessResponse> updateMember(
             @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long id,
             @Parameter(description = "회원 수정 정보", required = true, 
                     schema = @Schema(implementation = MemberUpdateRequest.class)) 
@@ -180,7 +188,7 @@ public interface MemberControllerDocs {
     @Operation(summary = "회원 삭제", description = "회원 ID로 기존 회원을 삭제합니다.")
     @ApiResponses(value = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "204", description = "삭제 성공", 
-                    content = @Content(schema = @Schema(implementation = ApiResponse.class))),
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "회원 없음", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class),
                     examples = @ExampleObject(
@@ -195,6 +203,6 @@ public interface MemberControllerDocs {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류", 
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    ResponseEntity<ApiResponse<Void>> deleteMember(
+    ResponseEntity<SuccessResponse> deleteMember(
             @Parameter(description = "회원 고유 식별자", required = true) @PathVariable Long id);
 }

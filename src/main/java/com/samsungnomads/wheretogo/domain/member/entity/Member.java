@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "member", uniqueConstraints = {
-    @UniqueConstraint(name = "uk_member_id", columnNames = {"id"}),
+    @UniqueConstraint(name = "uk_member_login_id", columnNames = {"login_id"}),
     @UniqueConstraint(name = "uk_member_email", columnNames = {"email"})
 })
 @Getter
@@ -29,11 +29,11 @@ public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "uid")
-    private Long uid; // 🔑 회원 기본 키 (AUTO INCREMENT)
+    @Column(name = "id")
+    private Long id; // 🔑 회원 기본 키 (AUTO INCREMENT)
     
-    @Column(name = "id", unique = true)
-    private String id; // 🆔 회원 아이디
+    @Column(name = "login_id", unique = true)
+    private String loginId; // 🆔 회원 로그인 아이디
     
     @Column(name = "email", nullable = false, unique = true)
     private String email; // 📧 회원 이메일
@@ -63,8 +63,8 @@ public class Member {
      * 📝 회원 정보 초기화
      */
     @Builder
-    public Member(String id, String email, String password, String nickname) {
-        this.id = id;
+    public Member(String loginId, String email, String password, String nickname) {
+        this.loginId = loginId;
         this.email = email;
         this.password = password;
         this.nickname = nickname;

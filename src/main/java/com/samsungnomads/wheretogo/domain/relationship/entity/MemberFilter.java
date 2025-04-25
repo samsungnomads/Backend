@@ -20,15 +20,15 @@ import lombok.NoArgsConstructor;
 public class MemberFilter {
 
     @Id
-    @Column(name = "member_uid", insertable = false, updatable = false)
-    private Long memberUid; // 👤 회원 UID 값 (중복 필드)
+    @Column(name = "member_id", insertable = false, updatable = false)
+    private Long memberId; // 👤 회원 ID 값 (중복 필드)
     
     @Id
     @Column(name = "filter_id", insertable = false, updatable = false)
     private Long filterId; // 🔍 필터 ID 값 (중복 필드)
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_uid", referencedColumnName = "uid")
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member; // 👤 회원 참조
     
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +43,7 @@ public class MemberFilter {
     public MemberFilter(Member member, Filter filter) {
         this.member = member;
         this.filter = filter;
-        this.memberUid = member.getUid();
+        this.memberId = member.getId();
         this.filterId = filter.getId();
     }
 } 

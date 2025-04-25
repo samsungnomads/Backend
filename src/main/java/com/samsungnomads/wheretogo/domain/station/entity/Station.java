@@ -32,7 +32,7 @@ public class Station {
     private String line; // 🚇 노선명
     
     @Column(name = "adress")
-    private String adress; // 📍 주소 정보
+    private String address; // 📍 주소 정보
     
     @CreationTimestamp
     @Column(name = "created_at")
@@ -47,19 +47,19 @@ public class Station {
      * 📝 역 정보 초기화
      */
     @Builder
-    public Station(String name, String line, String adress) {
+    public Station(String name, String line, String address) {
         this.name = name;
         this.line = line;
-        this.adress = adress;
+        this.address = address;
     }
     
     /**
      * 역 정보 업데이트
      * 🔄 역 정보 변경
      */
-    public void update(String name, String line, String adress) {
+    public void update(String name, String line, String address) {
         if (name != null) this.name = name;
         if (line != null) this.line = line;
-        if (adress != null) this.adress = adress;
+        if (address != null) this.address = address;
     }
 }

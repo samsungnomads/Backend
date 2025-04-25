@@ -37,7 +37,7 @@ public class Filter {
     private Boolean isShared; // 🔄 공유 여부
     
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", referencedColumnName = "uid")
+    @JoinColumn(name = "login_id", referencedColumnName = "login_id", nullable = false)
     private Member owner; // 👤 필터를 소유한 회원
     
     @OneToMany(mappedBy = "filter", cascade = CascadeType.ALL, orphanRemoval = true)

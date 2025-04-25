@@ -12,6 +12,15 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
+ * 앞으로 해야 할 일
+ * 1. 인증 기능 추가
+ * 2. 함수 오버라이드하여 변수 값이 String 인지 int 인지 확인하여,
+ * DB 조회 분기처리하기. 예시로 String 인 경우 LoginId 로 조회하고, int 인 경우 Id 로 조회하기.
+ * 3. 이후 등등
+ */
+
+
+/**
  * 회원 서비스
  * 💼 회원 관리 관련 비즈니스 로직을 처리하는 서비스
  */
@@ -30,7 +39,7 @@ public class MemberService {
     public Long join(Member member) {
         validateDuplicateMember(member);
         memberRepository.save(member);
-        return member.getUid();
+        return member.getId();
     }
     
     /**
@@ -38,8 +47,8 @@ public class MemberService {
      * 🔍 가입 시 아이디와 이메일 중복 체크
      */
     private void validateDuplicateMember(Member member) {
-        if (!isIdAvailable(member.getId())) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, "이미 사용 중인 아이디입니다: " + member.getId());
+        if (!isLoginIdAvailable(member.getLoginId())) {
+            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, "이미 사용 중인 아이디입니다: " + member.getLoginId());
         }
         
         if (!isEmailAvailable(member.getEmail())) {
@@ -48,7 +57,7 @@ public class MemberService {
     }
     
     /**
-     * 전체 회원 조회
+     * 모든 회원 조회
      * 🔍 등록된 모든 회원 목록 조회
      */
     public List<Member> findMembers() {
@@ -59,18 +68,18 @@ public class MemberService {
      * 회원 ID로 회원 조회
      * 🔍 고유 식별자로 특정 회원 정보 조회
      */
-    public Member findOne(Long uid) {
-        return memberRepository.findById(uid)
-                .orElseThrow(() -> EntityNotFoundException.memberNotFound(uid.toString()));
+    public Member findOne(Long id) {
+        return memberRepository.findById(id)
+                .orElseThrow(() -> EntityNotFoundException.memberNotFound(id.toString()));
     }
     
     /**
-     * 회원 아이디로 회원 조회
-     * 🔍 회원 아이디로 특정 회원 정보 조회
+     * 회원 로그인 아이디로 회원 조회
+     * 🔍 회원 로그인 아이디로 특정 회원 정보 조회
      */
-    public Member findByMemberId(String id) {
-        return memberRepository.findById(id)
-                .orElseThrow(() -> EntityNotFoundException.memberNotFound(id));
+    public Member findByLoginId(String loginId) {
+        return memberRepository.findByLoginId(loginId)
+                .orElseThrow(() -> EntityNotFoundException.memberNotFound(loginId));
     }
     
     /**
@@ -87,8 +96,8 @@ public class MemberService {
      * 🔄 기존 회원 정보 수정
      */
     @Transactional
-    public void update(Long uid, String password, String nickname) {
-        Member member = findOne(uid);
+    public void update(Long id, String password, String nickname) {
+        Member member = findOne(id);
         member.update(password, nickname);
     }
     
@@ -97,19 +106,19 @@ public class MemberService {
      * 🗑️ 회원 정보 삭제
      */
     @Transactional
-    public void delete(Long uid) {
-        if (!memberRepository.existsById(uid)) {
-            throw EntityNotFoundException.memberNotFound(uid.toString());
+    public void delete(Long id) {
+        if (!memberRepository.existsById(id)) {
+            throw EntityNotFoundException.memberNotFound(id.toString());
         }
-        memberRepository.deleteById(uid);
+        memberRepository.deleteById(id);
     }
     
     /**
      * 아이디 중복 검사
      * ✅ 아이디 사용 가능 여부 확인
      */
-    public boolean isIdAvailable(String id) {
-        return !memberRepository.existsById(id);
+    public boolean isLoginIdAvailable(String loginId) {
+        return !memberRepository.existsByLoginId(loginId);
     }
     
     /**

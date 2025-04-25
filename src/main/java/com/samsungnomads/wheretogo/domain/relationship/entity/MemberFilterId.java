@@ -17,6 +17,6 @@ import java.io.Serializable;
 @EqualsAndHashCode
 public class MemberFilterId implements Serializable {
     
-    private Long memberUid; // 👤 회원 ID (FK to member.uid)
+    private Long memberId; // 👤 회원 ID (FK to member.id)
     private Long filterId; // 🔍 필터 ID (FK to filter.id)
 } 

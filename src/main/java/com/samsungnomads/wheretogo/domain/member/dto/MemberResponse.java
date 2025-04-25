@@ -19,10 +19,10 @@ import java.time.LocalDateTime;
 public class MemberResponse {
 
     @Schema(description = "회원 고유 식별자", example = "1")
-    private Long uid;
+    private Long id;
 
-    @Schema(description = "회원 아이디", example = "hong123")
-    private String id;
+    @Schema(description = "회원 로그인 아이디", example = "hong123")
+    private String loginId;
 
     @Schema(description = "회원 이메일", example = "user@example.com")
     private String email;
@@ -41,10 +41,10 @@ public class MemberResponse {
      * 🏗️ 회원 응답 객체 생성
      */
     @Builder
-    public MemberResponse(Long uid, String id, String email, String nickname, 
+    public MemberResponse(Long id, String loginId, String email, String nickname, 
                          LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.uid = uid;
         this.id = id;
+        this.loginId = loginId;
         this.email = email;
         this.nickname = nickname;
         this.createdAt = createdAt;
@@ -57,8 +57,8 @@ public class MemberResponse {
      */
     public static MemberResponse of(Member member) {
         return MemberResponse.builder()
-                .uid(member.getUid())
                 .id(member.getId())
+                .loginId(member.getLoginId())
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .createdAt(member.getCreatedAt())

@@ -24,11 +24,11 @@ public interface MemberFilterRepository extends JpaRepository<MemberFilter, Memb
      * 회원 ID로 회원-필터 관계 목록 조회
      * 🔍 특정 회원이 접근 가능한 모든 필터 관계 조회
      */
-    List<MemberFilter> findByMemberUid(Long uid);
+    List<MemberFilter> findByMemberId(Long memberId);
     
     /**
      * 회원-필터 관계 존재 여부 확인
      * ✅ 특정 회원과 필터 간의 관계가 존재하는지 확인
      */
-    boolean existsByMemberUidAndFilterId(Long uid, Long filterId);
+    boolean existsByMemberIdAndFilterId(Long memberId, Long filterId);
 } 

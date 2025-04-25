@@ -20,6 +20,8 @@ public enum ErrorCode {
     EMAIL_DUPLICATION(HttpStatus.CONFLICT, "M001", "이미 사용 중인 이메일입니다"),
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "M002", "회원을 찾을 수 없습니다"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "M003", "비밀번호가 일치하지 않습니다"),
+    MEMBER_ID_DUPLICATION(HttpStatus.CONFLICT, "M004", "이미 사용 중인 아이디입니다"),
+
 
     // 필터 관련 오류
     FILTER_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "필터를 찾을 수 없습니다"),

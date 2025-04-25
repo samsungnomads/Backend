@@ -28,23 +28,9 @@ public class MemberService {
      */
     @Transactional
     public Long join(Member member) {
-        validateDuplicateMember(member);
+        // 컨트롤러에서 중복 검사 진행하므로 여기서는 생략
         memberRepository.save(member);
         return member.getUid();
-    }
-    
-    /**
-     * 회원 중복 검증
-     * 🔍 가입 시 아이디와 이메일 중복 체크
-     */
-    private void validateDuplicateMember(Member member) {
-        if (!isIdAvailable(member.getId())) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, "이미 사용 중인 아이디입니다: " + member.getId());
-        }
-        
-        if (!isEmailAvailable(member.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, "이미 사용 중인 이메일입니다: " + member.getEmail());
-        }
     }
     
     /**

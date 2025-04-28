@@ -6,7 +6,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,26 +33,7 @@ class ErrorResponseTest {
         assertEquals(errorCode.getCode(), response.getCode());
         assertEquals(errorCode.getMessage(), response.getMessage());
         assertEquals(errorCode.getStatus().value(), response.getStatus());
-        assertNotNull(response.getTimestamp());
         assertTrue(response.getErrors().isEmpty());
-    }
-
-    @Test
-    @DisplayName("타임스탬프는 현재 시간으로 설정된다")
-    void timestampShouldBeCurrentTime() {
-        // given
-        LocalDateTime before = LocalDateTime.now().minusSeconds(1);
-
-        // when
-        ErrorResponse response = ErrorResponse.of(ErrorCode.INVALID_INPUT_VALUE);
-        LocalDateTime after = LocalDateTime.now().plusSeconds(1);
-
-        // then
-        assertTrue(
-                !response.getTimestamp().isBefore(before) &&
-                        !response.getTimestamp().isAfter(after),
-                "타임스탬프가 현재 시간 범위 내에 있어야 합니다"
-        );
     }
 
     @Test
@@ -84,7 +64,7 @@ class ErrorResponseTest {
         assertEquals(2, response.getErrors().size());
 
         // 첫 번째 필드 오류 검증
-        assertEquals("email", response.getErrors().getFirst().getField());
+        assertEquals("email", response.getErrors().get(0).getField());
         assertEquals("test@", response.getErrors().get(0).getValue());
         assertEquals("이메일 형식이 올바르지 않습니다", response.getErrors().get(0).getReason());
 

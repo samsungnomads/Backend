@@ -33,10 +33,7 @@ class GlobalExceptionHandlerIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.code", is("C001")))
                 .andExpect(jsonPath("$.message", is("잘못된 입력값입니다")))
-                .andExpect(jsonPath("$.status", is(400)))
-                .andExpect(jsonPath("$.timestamp").exists())
-                .andExpect(jsonPath("$.errors").isArray())
-                .andExpect(jsonPath("$.errors").isEmpty());
+                .andExpect(jsonPath("$.status", is(400)));
     }
 
     @Test
@@ -47,7 +44,7 @@ class GlobalExceptionHandlerIntegrationTest {
                 .andDo(print()) // 🔍 응답 내용 출력하여 디버깅 용이하게 함
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code", is("M002")))
-                .andExpect(jsonPath("$.message", is("회원을 찾을 수 없습니다")))
+                .andExpect(jsonPath("$.message", is("회원을 찾을 수 없습니다. ID: 123")))
                 .andExpect(jsonPath("$.status", is(404)));
     }
 

@@ -65,6 +65,6 @@ class BusinessExceptionTest {
         BusinessException exception = new BusinessException(ErrorCode.INVALID_PASSWORD);
 
         // when & then
-        assertInstanceOf(RuntimeException.class, exception);
+        assertTrue(exception instanceof RuntimeException);
     }
 } 

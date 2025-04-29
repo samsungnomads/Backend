@@ -20,9 +20,9 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class FilterStationService {
-    
+
     private final FilterStationRepository filterStationRepository;
-    
+
     /**
      * 필터-역 관계 생성
      * 📝 필터와 역 간의 새로운 관계 생성
@@ -33,10 +33,10 @@ public class FilterStationService {
                 .filter(filter)
                 .station(station)
                 .build();
-        
+
         return filterStationRepository.save(filterStation);
     }
-    
+
     /**
      * 필터의 모든 역 관계 조회
      * 🔍 특정 필터에 포함된 모든 역 관계 조회
@@ -44,7 +44,7 @@ public class FilterStationService {
     public List<FilterStation> findStationsByFilter(Long filterId) {
         return filterStationRepository.findByFilterId(filterId);
     }
-    
+
     /**
      * 역의 모든 필터 관계 조회
      * 🔍 특정 역이 포함된 모든 필터 관계 조회
@@ -52,7 +52,7 @@ public class FilterStationService {
     public List<FilterStation> findFiltersByStation(Long stationId) {
         return filterStationRepository.findByStationId(stationId);
     }
-    
+
     /**
      * 특정 필터-역 관계 조회
      * 🔍 특정 필터와 역 간의 관계 조회
@@ -61,7 +61,7 @@ public class FilterStationService {
         FilterStationId id = new FilterStationId(filterId, stationId);
         return filterStationRepository.findById(id);
     }
-    
+
     /**
      * 필터-역 관계 삭제
      * 🗑️ 필터와 역 간의 관계 제거
@@ -71,7 +71,7 @@ public class FilterStationService {
         FilterStationId id = new FilterStationId(filterId, stationId);
         filterStationRepository.deleteById(id);
     }
-    
+
     /**
      * 필터-역 관계 확인
      * ✅ 특정 필터와 역 간의 관계가 존재하는지 확인

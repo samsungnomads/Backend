@@ -24,42 +24,42 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id; // 🔑 역 ID (AUTO INCREMENT)
-    
+
     @Column(name = "name", nullable = false, length = 100)
     private String name; // 📝 역 이름
-    
-    @Column(name = "line", length = 50)
-    private String line; // 🚇 노선명
-    
+
     @Column(name = "address")
     private String address; // 📍 주소 정보
-    
+
+    @Column(name = "area")
+    private String area;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt; // 📅 생성 시간
-    
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt; // 🔄 수정 시간
-    
+
     /**
      * 역 생성자
      * 📝 역 정보 초기화
      */
     @Builder
-    public Station(String name, String line, String address) {
+    public Station(String name, String address, String area) {
         this.name = name;
-        this.line = line;
         this.address = address;
+        this.area = area;
     }
-    
+
     /**
      * 역 정보 업데이트
      * 🔄 역 정보 변경
      */
-    public void update(String name, String line, String address) {
+    public void update(String name, String address, String area) {
         if (name != null) this.name = name;
-        if (line != null) this.line = line;
         if (address != null) this.address = address;
+        if (area != null) this.area = area;
     }
 }

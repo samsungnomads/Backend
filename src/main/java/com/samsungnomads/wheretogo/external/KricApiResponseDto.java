@@ -1,4 +1,4 @@
-package com.samsungnomads.wheretogo.domain.station.dto;
+package com.samsungnomads.wheretogo.external;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class PublicApiResponseDto {
+public class KricApiResponseDto {
 
     private Header header;
     private List<StationInfo> body;

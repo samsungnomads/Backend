@@ -1,5 +1,6 @@
 package com.samsungnomads.wheretogo.domain.line;
 
+import com.samsungnomads.wheretogo.domain.station.entity.enums.LineCode;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +23,8 @@ public class Line {
     private String name;
 
     @Builder
-    public Line(String code, String name) {
-        this.code = code;
-        this.name = name;
+    public Line(LineCode lineCode) {
+        this.code = lineCode.getCode();
+        this.name = lineCode.getName();
     }
 }

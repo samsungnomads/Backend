@@ -1,4 +1,4 @@
-package com.samsungnomads.wheretogo.domain.test;
+package com.samsungnomads.wheretogo.domain.test.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

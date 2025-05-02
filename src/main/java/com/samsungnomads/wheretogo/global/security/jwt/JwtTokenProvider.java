@@ -1,5 +1,6 @@
 package com.samsungnomads.wheretogo.global.security.jwt;
 
+import com.samsungnomads.wheretogo.global.security.dto.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -12,8 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -82,10 +81,12 @@ public class JwtTokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .toList();
 
-        // UserDetails 객체를 만들어서 Authentication return
-        // UserDetails: interface, User: UserDetails를 구현한 class
-        // principal : 인증된 사용자 정보
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
+        UserDetailsImpl principal = new UserDetailsImpl(
+                claims.getSubject(), // username
+                "",                  // password
+                authorities          // Collection<? extends GrantedAuthority>
+        );
+        log.info(claims.toString());
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
 
     }

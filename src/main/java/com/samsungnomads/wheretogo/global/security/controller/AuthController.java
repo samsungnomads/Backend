@@ -31,7 +31,6 @@ public class AuthController {
     public ResponseEntity<SuccessResponse<JwtToken>> login(@RequestBody LoginRequestDto loginRequestDto) {
 
         JwtToken jwtToken = authService.login(loginRequestDto);
-        log.info("JWT token: {}", jwtToken);
         return SuccessResponse.of(SuccessCode.MEMBER_LOGIN_SUCCESS, jwtToken);
     }
 

@@ -6,10 +6,14 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 회원 엔티티
@@ -84,4 +88,11 @@ public class Member {
         if (password != null) this.password = password;
         if (nickname != null) this.nickname = nickname;
     }
+    
+    public Collection<? extends GrantedAuthority> getRoles() {
+        return this.roles.stream()
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
 }

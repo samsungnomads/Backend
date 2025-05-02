@@ -4,6 +4,7 @@ import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -88,6 +89,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    protected ResponseEntity<ErrorResponse> handleBadCredentialsException(final BadCredentialsException e) {
+        log.error("아이디 또는 비밀번호가 일치하지 않습니다 {}", e.getMessage());
+        final ErrorResponse response = ErrorResponse.of(ErrorCode.AUTHENTICATION_FAILED);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     /**
      * 그 외 모든 예외 처리
      * 💥 처리되지 않은 모든 예외를 잡아 내부 서버 오류로 처리
@@ -98,4 +106,5 @@ public class GlobalExceptionHandler {
         final ErrorResponse response = ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 } 

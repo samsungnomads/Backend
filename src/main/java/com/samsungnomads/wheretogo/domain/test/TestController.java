@@ -22,7 +22,6 @@ public class TestController implements TestControllerDocs {
         return SuccessResponse.of(SuccessCode.OK, testResponseDto);
     }
 
-
     @GetMapping("123")
     public String test123() {
         return "Test Endpoint";

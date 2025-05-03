@@ -12,6 +12,7 @@ import com.samsungnomads.wheretogo.global.response.SuccessCode;
 import com.samsungnomads.wheretogo.global.response.SuccessResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,14 @@ import java.util.stream.Collectors;
  * 회원 컨트롤러
  * 👤 회원 관련 API 요청을 처리하는 컨트롤러
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberController implements MemberControllerDocs {
 
     private final MemberService memberService;
+
 
     /**
      * 회원 목록 조회
@@ -67,16 +70,16 @@ public class MemberController implements MemberControllerDocs {
     public ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(@Valid @RequestBody MemberCreateRequest request) {
         // 아이디 중복 검사
         if (!memberService.isLoginIdAvailable(request.getLoginId())) {
-            throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION, 
+            throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION,
                     String.format("이미 사용 중인 아이디입니다: %s", request.getLoginId()));
         }
-        
+
         // 이메일 중복 검사
         if (!memberService.isEmailAvailable(request.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, 
+            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION,
                     String.format("이미 사용 중인 이메일입니다: %s", request.getEmail()));
         }
-        
+
         Member member = request.toEntity();
         Long id = memberService.join(member);
         return SuccessResponse.of(SuccessCode.CREATED, MemberIdResponse.of(id));
@@ -89,7 +92,7 @@ public class MemberController implements MemberControllerDocs {
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<SuccessResponse> updateMember(
-            @PathVariable Long id, 
+            @PathVariable Long id,
             @Valid @RequestBody MemberUpdateRequest request) {
         memberService.update(id, request.getPassword(), request.getNickname());
         return SuccessResponse.of(SuccessCode.UPDATED);
@@ -106,4 +109,6 @@ public class MemberController implements MemberControllerDocs {
         memberService.delete(id);
         return SuccessResponse.of(SuccessCode.DELETED);
     }
+
+
 }

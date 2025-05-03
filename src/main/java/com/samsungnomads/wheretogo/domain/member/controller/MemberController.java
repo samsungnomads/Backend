@@ -13,6 +13,7 @@ import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,14 @@ import java.util.stream.Collectors;
  * 회원 컨트롤러
  * 👤 회원 관련 API 요청을 처리하는 컨트롤러
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/members")
 @RequiredArgsConstructor
 public class MemberController implements MemberControllerDocs {
 
     private final MemberService memberService;
+
 
     /**
      * 회원 목록 조회

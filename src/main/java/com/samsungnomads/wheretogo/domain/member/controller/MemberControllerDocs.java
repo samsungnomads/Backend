@@ -79,63 +79,63 @@ public interface MemberControllerDocs {
      * 회원 등록
      * 📝 새로운 회원을 등록합니다.
      */
-    @Operation(
-            summary = "회원 등록",
-            description = "새로운 회원 정보를 등록합니다. 응답으로 시스템에서 자동 생성된 회원 ID(PK)를 반환합니다. " +
-                    "이 ID는 Auto Increment 형식으로 생성되며, 회원의 로그인 ID(loginId)와는 다릅니다."
-    )
-    @ApiResponses(value = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(
-                    responseCode = "201",
-                    description = "등록 성공 - 생성된 회원의 시스템 ID(PK)가 반환됨",
-                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))
-            ),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class),
-                            examples = @ExampleObject(
-                                    name = "유효성 검증 실패",
-                                    value = "{\n" +
-                                            "  \"status\": 400,\n" +
-                                            "  \"code\": \"C001\",\n" +
-                                            "  \"message\": \"잘못된 입력값입니다\",\n" +
-                                            "  \"errors\": [\n" +
-                                            "    {\n" +
-                                            "      \"field\": \"email\",\n" +
-                                            "      \"value\": \"invalid-email\",\n" +
-                                            "      \"reason\": \"유효한 이메일 형식이 아닙니다\"\n" +
-                                            "    }\n" +
-                                            "  ]\n" +
-                                            "}"
-                            ))),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "중복된 회원",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class),
-                            examples = {
-                                    @ExampleObject(
-                                            name = "이메일 중복",
-                                            value = "{\n" +
-                                                    "  \"status\": 409,\n" +
-                                                    "  \"code\": \"M001\",\n" +
-                                                    "  \"message\": \"이미 사용 중인 이메일입니다: user@example.com\",\n" +
-                                                    "  \"errors\": []\n" +
-                                                    "}"
-                                    ),
-                                    @ExampleObject(
-                                            name = "아이디 중복",
-                                            value = "{\n" +
-                                                    "  \"status\": 409,\n" +
-                                                    "  \"code\": \"M004\",\n" +
-                                                    "  \"message\": \"이미 사용 중인 아이디입니다: hong123\",\n" +
-                                                    "  \"errors\": []\n" +
-                                                    "}"
-                                    )
-                            })),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류",
-                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(
-            @Parameter(description = "회원 등록 정보", required = true,
-                    schema = @Schema(implementation = MemberCreateRequest.class))
-            @Valid @RequestBody MemberCreateRequest request);
+//    @Operation(
+//            summary = "회원 등록",
+//            description = "새로운 회원 정보를 등록합니다. 응답으로 시스템에서 자동 생성된 회원 ID(PK)를 반환합니다. " +
+//                    "이 ID는 Auto Increment 형식으로 생성되며, 회원의 로그인 ID(loginId)와는 다릅니다."
+//    )
+//    @ApiResponses(value = {
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+//                    responseCode = "201",
+//                    description = "등록 성공 - 생성된 회원의 시스템 ID(PK)가 반환됨",
+//                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))
+//            ),
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "잘못된 요청",
+//                    content = @Content(schema = @Schema(implementation = ErrorResponse.class),
+//                            examples = @ExampleObject(
+//                                    name = "유효성 검증 실패",
+//                                    value = "{\n" +
+//                                            "  \"status\": 400,\n" +
+//                                            "  \"code\": \"C001\",\n" +
+//                                            "  \"message\": \"잘못된 입력값입니다\",\n" +
+//                                            "  \"errors\": [\n" +
+//                                            "    {\n" +
+//                                            "      \"field\": \"email\",\n" +
+//                                            "      \"value\": \"invalid-email\",\n" +
+//                                            "      \"reason\": \"유효한 이메일 형식이 아닙니다\"\n" +
+//                                            "    }\n" +
+//                                            "  ]\n" +
+//                                            "}"
+//                            ))),
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "409", description = "중복된 회원",
+//                    content = @Content(schema = @Schema(implementation = ErrorResponse.class),
+//                            examples = {
+//                                    @ExampleObject(
+//                                            name = "이메일 중복",
+//                                            value = "{\n" +
+//                                                    "  \"status\": 409,\n" +
+//                                                    "  \"code\": \"M001\",\n" +
+//                                                    "  \"message\": \"이미 사용 중인 이메일입니다: user@example.com\",\n" +
+//                                                    "  \"errors\": []\n" +
+//                                                    "}"
+//                                    ),
+//                                    @ExampleObject(
+//                                            name = "아이디 중복",
+//                                            value = "{\n" +
+//                                                    "  \"status\": 409,\n" +
+//                                                    "  \"code\": \"M004\",\n" +
+//                                                    "  \"message\": \"이미 사용 중인 아이디입니다: hong123\",\n" +
+//                                                    "  \"errors\": []\n" +
+//                                                    "}"
+//                                    )
+//                            })),
+//            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "서버 오류",
+//                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+//    })
+//    ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(
+//            @Parameter(description = "회원 등록 정보", required = true,
+//                    schema = @Schema(implementation = MemberCreateRequest.class))
+//            @Valid @RequestBody MemberCreateRequest request);
 
     /**
      * 회원 정보 수정

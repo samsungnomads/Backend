@@ -48,9 +48,11 @@ public class Member {
     private String nickname; // 👨‍💼 회원 닉네임
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Filter> ownedFilters = new ArrayList<>(); // 🔍 소유한 필터 목록
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<MemberFilter> sharedFilters = new ArrayList<>(); // 🔄 공유받은 필터 목록
 
     @CreationTimestamp

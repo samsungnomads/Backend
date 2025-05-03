@@ -64,27 +64,28 @@ public class MemberController implements MemberControllerDocs {
      * 📝 새로운 회원을 등록합니다.
      * 🔑 등록 성공 시 시스템에서 자동 생성된 회원 ID(PK)를 반환합니다.
      * 📢 이 ID는 Auto Increment로 생성되며 로그인 ID(loginId)와는 다른 값입니다.
+     * 현재 JWT 를 통한 AuthController 에서 처리하므로 주석 처리함
      */
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    @Override
-    public ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(@Valid @RequestBody MemberCreateRequest request) {
-        // 아이디 중복 검사
-        if (memberService.isLoginIdAvailable(request.getLoginId())) {
-            throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION, 
-                    String.format("이미 사용 중인 아이디입니다: %s", request.getLoginId()));
-        }
-        
-        // 이메일 중복 검사
-        if (memberService.isEmailAvailable(request.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, 
-                    String.format("이미 사용 중인 이메일입니다: %s", request.getEmail()));
-        }
-        
-        Member member = request.toEntity();
-        Long id = memberService.join(member);
-        return SuccessResponse.of(SuccessCode.CREATED, MemberIdResponse.of(id));
-    }
+//    @PostMapping
+//    @ResponseStatus(HttpStatus.CREATED)
+//    @Override
+//    public ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(@Valid @RequestBody MemberCreateRequest request) {
+//        // 아이디 중복 검사
+//        if (memberService.isLoginIdAvailable(request.getLoginId())) {
+//            throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION, 
+//                    String.format("이미 사용 중인 아이디입니다: %s", request.getLoginId()));
+//        }
+//        
+//        // 이메일 중복 검사
+//        if (memberService.isEmailAvailable(request.getEmail())) {
+//            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, 
+//                    String.format("이미 사용 중인 이메일입니다: %s", request.getEmail()));
+//        }
+//        
+//        Member member = request.toEntity();
+//        Long id = memberService.join(member);
+//        return SuccessResponse.of(SuccessCode.CREATED, MemberIdResponse.of(id));
+//    }
 
     /**
      * 회원 정보 수정

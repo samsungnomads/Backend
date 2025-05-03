@@ -1,7 +1,7 @@
 package com.samsungnomads.wheretogo.domain.test;
 
 
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

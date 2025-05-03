@@ -1,11 +1,12 @@
 package com.samsungnomads.wheretogo.domain.test;
 
-import com.samsungnomads.wheretogo.global.response.SuccessCode;
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.samsungnomads.wheretogo.global.success.SuccessCode;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 
 @RestController
 @RequestMapping("api/test")

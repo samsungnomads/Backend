@@ -1,4 +1,4 @@
-package com.samsungnomads.wheretogo.global.response;
+package com.samsungnomads.wheretogo.global.success;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

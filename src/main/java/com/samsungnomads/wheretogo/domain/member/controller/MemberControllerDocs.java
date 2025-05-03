@@ -5,7 +5,8 @@ import com.samsungnomads.wheretogo.domain.member.dto.MemberIdResponse;
 import com.samsungnomads.wheretogo.domain.member.dto.MemberResponse;
 import com.samsungnomads.wheretogo.domain.member.dto.MemberUpdateRequest;
 import com.samsungnomads.wheretogo.global.error.ErrorResponse;
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

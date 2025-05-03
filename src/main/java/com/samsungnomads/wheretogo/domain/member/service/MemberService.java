@@ -47,11 +47,11 @@ public class MemberService {
      * 🔍 가입 시 아이디와 이메일 중복 체크
      */
     private void validateDuplicateMember(Member member) {
-        if (!isLoginIdAvailable(member.getLoginId())) {
+        if (isLoginIdAvailable(member.getLoginId())) {
             throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, "이미 사용 중인 아이디입니다: " + member.getLoginId());
         }
         
-        if (!isEmailAvailable(member.getEmail())) {
+        if (isEmailAvailable(member.getEmail())) {
             throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, "이미 사용 중인 이메일입니다: " + member.getEmail());
         }
     }
@@ -118,7 +118,7 @@ public class MemberService {
      * ✅ 아이디 사용 가능 여부 확인
      */
     public boolean isLoginIdAvailable(String loginId) {
-        return !memberRepository.existsByLoginId(loginId);
+        return memberRepository.existsByLoginId(loginId);
     }
     
     /**
@@ -126,6 +126,6 @@ public class MemberService {
      * ✅ 이메일 사용 가능 여부 확인
      */
     public boolean isEmailAvailable(String email) {
-        return !memberRepository.existsByEmail(email);
+        return memberRepository.existsByEmail(email);
     }
 }

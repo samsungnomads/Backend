@@ -1,4 +1,4 @@
-package com.samsungnomads.wheretogo.global.response;
+package com.samsungnomads.wheretogo.global.success;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -14,6 +14,8 @@ public class SuccessResponse<T> {
 
     @Schema(description = "상태 메시지", example = "요청이 성공했습니다.")
     private final String message;
+    
+    @Schema(description = "데이터", example = "{}")
     private T data;
 
     public static ResponseEntity<SuccessResponse> of(SuccessCode successCode) {

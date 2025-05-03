@@ -8,8 +8,9 @@ import com.samsungnomads.wheretogo.domain.member.entity.Member;
 import com.samsungnomads.wheretogo.domain.member.service.MemberService;
 import com.samsungnomads.wheretogo.global.error.ErrorCode;
 import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
-import com.samsungnomads.wheretogo.global.response.SuccessCode;
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
+import com.samsungnomads.wheretogo.global.success.SuccessCode;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,17 +70,17 @@ public class MemberController implements MemberControllerDocs {
     @Override
     public ResponseEntity<SuccessResponse<MemberIdResponse>> createMember(@Valid @RequestBody MemberCreateRequest request) {
         // 아이디 중복 검사
-        if (!memberService.isLoginIdAvailable(request.getLoginId())) {
-            throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION,
+        if (memberService.isLoginIdAvailable(request.getLoginId())) {
+            throw new BusinessException(ErrorCode.MEMBER_ID_DUPLICATION, 
                     String.format("이미 사용 중인 아이디입니다: %s", request.getLoginId()));
         }
-
+        
         // 이메일 중복 검사
-        if (!memberService.isEmailAvailable(request.getEmail())) {
-            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION,
+        if (memberService.isEmailAvailable(request.getEmail())) {
+            throw new BusinessException(ErrorCode.EMAIL_DUPLICATION, 
                     String.format("이미 사용 중인 이메일입니다: %s", request.getEmail()));
         }
-
+        
         Member member = request.toEntity();
         Long id = memberService.join(member);
         return SuccessResponse.of(SuccessCode.CREATED, MemberIdResponse.of(id));
@@ -92,7 +93,7 @@ public class MemberController implements MemberControllerDocs {
     @PutMapping("/{id}")
     @Override
     public ResponseEntity<SuccessResponse> updateMember(
-            @PathVariable Long id,
+            @PathVariable Long id, 
             @Valid @RequestBody MemberUpdateRequest request) {
         memberService.update(id, request.getPassword(), request.getNickname());
         return SuccessResponse.of(SuccessCode.UPDATED);
@@ -109,6 +110,4 @@ public class MemberController implements MemberControllerDocs {
         memberService.delete(id);
         return SuccessResponse.of(SuccessCode.DELETED);
     }
-
-
 }

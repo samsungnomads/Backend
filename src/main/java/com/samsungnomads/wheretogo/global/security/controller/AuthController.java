@@ -1,7 +1,7 @@
 package com.samsungnomads.wheretogo.global.security.controller;
 
-import com.samsungnomads.wheretogo.global.response.SuccessCode;
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
+import com.samsungnomads.wheretogo.global.success.SuccessCode;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import com.samsungnomads.wheretogo.global.security.dto.LoginRequestDto;
 import com.samsungnomads.wheretogo.global.security.dto.SignUpRequestDto;
 import com.samsungnomads.wheretogo.global.security.jwt.JwtToken;

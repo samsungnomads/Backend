@@ -2,8 +2,6 @@ package com.samsungnomads.wheretogo.domain.test.controller;
 
 import com.samsungnomads.wheretogo.domain.test.dto.AuthTestResponseDto;
 import com.samsungnomads.wheretogo.domain.test.dto.TestResponseDto;
-import com.samsungnomads.wheretogo.global.response.SuccessCode;
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
 import com.samsungnomads.wheretogo.global.security.dto.UserDetailsImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +9,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.samsungnomads.wheretogo.global.success.SuccessCode;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 
 @Slf4j
 @RestController

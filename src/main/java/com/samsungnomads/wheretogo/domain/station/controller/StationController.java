@@ -3,8 +3,9 @@ package com.samsungnomads.wheretogo.domain.station.controller;
 import com.samsungnomads.wheretogo.domain.station.dto.RecommendationDto;
 import com.samsungnomads.wheretogo.domain.station.dto.StationResponseDto;
 import com.samsungnomads.wheretogo.domain.station.service.StationService;
-import com.samsungnomads.wheretogo.global.response.SuccessCode;
-import com.samsungnomads.wheretogo.global.response.SuccessResponse;
+import com.samsungnomads.wheretogo.global.success.SuccessCode;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

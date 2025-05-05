@@ -1,5 +1,6 @@
 package com.samsungnomads.wheretogo.domain.filter.controller;
 
+import com.samsungnomads.wheretogo.domain.filter.dto.FilterDetailDto;
 import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateCreationDto;
 import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateOwnDto;
 import com.samsungnomads.wheretogo.domain.filter.service.FilterService;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +35,12 @@ public class FilterController implements FilterControllerDocs {
     public ResponseEntity<SuccessResponse<List<FilterPrivateCreationDto>>> getPrivateCreationFilters(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<FilterPrivateCreationDto> filterPrivateCreationDtos = filterService.getPrivateCreationFiltersByLoginId(userDetails.getUsername());
         return SuccessResponse.of(SuccessCode.OK, filterPrivateCreationDtos);
+    }
+
+    @GetMapping("/{filterId}")
+    public ResponseEntity<SuccessResponse<FilterDetailDto>> getFilterDetail(@PathVariable("filterId") Long filterId) {
+        FilterDetailDto filterDetailDto = filterService.getFilterDetail(filterId);
+        return SuccessResponse.of(SuccessCode.OK, filterDetailDto);
     }
 
 }

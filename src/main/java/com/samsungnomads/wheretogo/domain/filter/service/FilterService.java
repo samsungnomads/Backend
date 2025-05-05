@@ -1,5 +1,6 @@
 package com.samsungnomads.wheretogo.domain.filter.service;
 
+import com.samsungnomads.wheretogo.domain.filter.dto.FilterDetailDto;
 import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateCreationDto;
 import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateOwnDto;
 import com.samsungnomads.wheretogo.domain.filter.entity.Filter;
@@ -8,6 +9,8 @@ import com.samsungnomads.wheretogo.domain.member.entity.Member;
 import com.samsungnomads.wheretogo.domain.member.repository.MemberRepository;
 import com.samsungnomads.wheretogo.domain.relationship.entity.MemberFilter;
 import com.samsungnomads.wheretogo.domain.relationship.repository.MemberFilterRepository;
+import com.samsungnomads.wheretogo.global.error.ErrorCode;
+import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,5 +45,12 @@ public class FilterService {
         return filters.stream()
                 .map(FilterPrivateCreationDto::from)
                 .toList();
+    }
+
+    @Transactional
+    public FilterDetailDto getFilterDetail(Long filterId) {
+        Filter filter = filterRepository.findById(filterId).orElseThrow(() -> new BusinessException(ErrorCode.FILTER_NOT_FOUND));
+
+        return FilterDetailDto.from(filter);
     }
 }

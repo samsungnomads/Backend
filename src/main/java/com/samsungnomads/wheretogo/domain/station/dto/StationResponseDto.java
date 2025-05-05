@@ -1,5 +1,7 @@
 package com.samsungnomads.wheretogo.domain.station.dto;
 
+import com.samsungnomads.wheretogo.domain.relationship.entity.LineStation;
+import com.samsungnomads.wheretogo.domain.station.entity.Station;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,4 +14,12 @@ public class StationResponseDto {
     private String address;
     private String area;
 
+    public static StationResponseDto from(Station station, LineStation lineStation) {
+        return new StationResponseDto(
+                station.getName(),
+                lineStation.getOrderInLine(),
+                station.getAddress(),
+                station.getArea()
+        );
+    }
 }

@@ -47,9 +47,9 @@ public class Member {
     @Column(name = "nickname", length = 100)
     private String nickname; // 👨‍💼 회원 닉네임
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
-    private List<Filter> ownedFilters = new ArrayList<>(); // 🔍 소유한 필터 목록
+    private List<Filter> createdFilters = new ArrayList<>(); // 🔍 제작한 필터 목록
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
@@ -90,7 +90,7 @@ public class Member {
         if (password != null) this.password = password;
         if (nickname != null) this.nickname = nickname;
     }
-    
+
     public Collection<? extends GrantedAuthority> getRoles() {
         return this.roles.stream()
                 .map(SimpleGrantedAuthority::new)

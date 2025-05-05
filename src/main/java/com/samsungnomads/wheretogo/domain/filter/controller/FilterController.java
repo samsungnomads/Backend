@@ -28,19 +28,19 @@ public class FilterController implements FilterControllerDocs {
     @GetMapping("/private/owns")
     public ResponseEntity<SuccessResponse<List<FilterPrivateOwnDto>>> getPrivateOwnFilters(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<FilterPrivateOwnDto> filterPrivateOwnDtos = filterService.getPrivateOwnFiltersByLoginId(userDetails.getUsername());
-        return SuccessResponse.of(SuccessCode.OK, filterPrivateOwnDtos);
+        return SuccessResponse.of(SuccessCode.FILTER_PRIVATE_OWN, filterPrivateOwnDtos);
     }
 
     @GetMapping("/private/creations")
     public ResponseEntity<SuccessResponse<List<FilterPrivateCreationDto>>> getPrivateCreationFilters(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<FilterPrivateCreationDto> filterPrivateCreationDtos = filterService.getPrivateCreationFiltersByLoginId(userDetails.getUsername());
-        return SuccessResponse.of(SuccessCode.OK, filterPrivateCreationDtos);
+        return SuccessResponse.of(SuccessCode.FILTER_PRIVATE_CREATION, filterPrivateCreationDtos);
     }
 
     @GetMapping("/{filterId}")
     public ResponseEntity<SuccessResponse<FilterDetailDto>> getFilterDetail(@PathVariable("filterId") Long filterId) {
         FilterDetailDto filterDetailDto = filterService.getFilterDetail(filterId);
-        return SuccessResponse.of(SuccessCode.OK, filterDetailDto);
+        return SuccessResponse.of(SuccessCode.FILTER_DETAIL, filterDetailDto);
     }
 
 }

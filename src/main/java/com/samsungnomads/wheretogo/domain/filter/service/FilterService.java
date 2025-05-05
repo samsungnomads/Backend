@@ -26,7 +26,7 @@ public class FilterService {
     @Transactional
     public List<FilterPrivateOwnDto> getPrivateOwnFiltersByLoginId(String loginId) {
         Member member = memberRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid loginId: " + loginId));
+                .orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND, loginId));
 
         List<MemberFilter> memberFilters = memberFilterRepository.findByMemberId(member.getId());
 

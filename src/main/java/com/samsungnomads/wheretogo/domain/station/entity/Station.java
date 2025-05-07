@@ -1,5 +1,6 @@
 package com.samsungnomads.wheretogo.domain.station.entity;
 
+import com.samsungnomads.wheretogo.domain.relationship.entity.LineStation;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 역 엔티티
@@ -41,6 +43,9 @@ public class Station {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt; // 🔄 수정 시간
+
+    @OneToMany(mappedBy = "station", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LineStation> lineStations;
 
     /**
      * 역 생성자

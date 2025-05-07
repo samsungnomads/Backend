@@ -1,10 +1,13 @@
 package com.samsungnomads.wheretogo.domain.line;
 
+import com.samsungnomads.wheretogo.domain.relationship.entity.LineStation;
 import com.samsungnomads.wheretogo.domain.station.entity.enums.LineCode;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "line")
@@ -21,6 +24,9 @@ public class Line {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @OneToMany(mappedBy = "line", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<LineStation> lineStations;
 
     @Builder
     public Line(LineCode lineCode) {

@@ -25,11 +25,13 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final Key key;
+    private final TokenBlacklist tokenBlacklist;
 
     // application.yml 에서 secret 값 가져와서 key에 저장
-    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+    public JwtTokenProvider(@Value("${jwt.secret}") String secretKey, TokenBlacklist tokenBlacklist) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.tokenBlacklist = tokenBlacklist;
     }
 
     // Member 정보를 가지고 AccessToken, RefreshToken을 생성하는 메서드
@@ -68,7 +70,12 @@ public class JwtTokenProvider {
 
     // Jwt를 복호화하여 토큰에 들어있는 정보를 꺼내는 메서드
     public Authentication getAuthentication(String accessToken) {
-
+        
+        // 블랙리스트 체크
+        if (tokenBlacklist.isBlacklisted(accessToken)) {
+            throw new RuntimeException("로그아웃된 토큰입니다.");
+        }
+        
         // Jwt 토큰 복호화
         Claims claims = parseClaims(accessToken);
 
@@ -92,7 +99,11 @@ public class JwtTokenProvider {
     }
 
     public boolean validateToken(String token) {
-
+        // 블랙리스트 체크
+        if (tokenBlacklist.isBlacklisted(token)) {
+            return false;
+        }
+        
         Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

@@ -19,6 +19,7 @@ public enum SuccessCode {
     // 회원 관련
     MEMBER_SIGNUP_SUCCESS(HttpStatus.OK, "회원가입이 성공적으로 완료되었습니다."),
     MEMBER_LOGIN_SUCCESS(HttpStatus.OK, "로그인이 성공적으로 완료되었습니다."),
+    MEMBER_LOGOUT_SUCCESS(HttpStatus.OK, "로그아웃이 성공적으로 완료되었습니다."),
 
     // 필터 관련
     FILTER_PRIVATE_OWN(HttpStatus.OK, "사용자가 소유한 필터 목록을 성공적으로 조회했습니다."),

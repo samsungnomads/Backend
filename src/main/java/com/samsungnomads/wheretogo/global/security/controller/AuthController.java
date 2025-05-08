@@ -3,6 +3,7 @@ package com.samsungnomads.wheretogo.global.security.controller;
 import com.samsungnomads.wheretogo.global.success.SuccessCode;
 import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import com.samsungnomads.wheretogo.global.security.dto.LoginRequestDto;
+import com.samsungnomads.wheretogo.global.security.dto.LogoutRequestDto;
 import com.samsungnomads.wheretogo.global.security.dto.SignUpRequestDto;
 import com.samsungnomads.wheretogo.global.security.jwt.JwtToken;
 import com.samsungnomads.wheretogo.global.security.service.AuthService;
@@ -34,5 +35,9 @@ public class AuthController {
         return SuccessResponse.of(SuccessCode.MEMBER_LOGIN_SUCCESS, jwtToken);
     }
 
-
+    @PostMapping("/logout")
+    public ResponseEntity<SuccessResponse> logout(@RequestBody LogoutRequestDto logoutRequestDto) {
+        authService.logout(logoutRequestDto);
+        return SuccessResponse.of(SuccessCode.MEMBER_LOGOUT_SUCCESS);
+    }
 }

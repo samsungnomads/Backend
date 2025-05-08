@@ -33,6 +33,7 @@ public enum ErrorCode {
 
     // 필터 관련 오류
     FILTER_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "필터를 찾을 수 없습니다"),
+    FILTER_NOT_OWNER(HttpStatus.UNAUTHORIZED, "F002", "필터를 소유하고 있지 않습니다"),
 
     // 지하철역 관련 오류
     STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "지하철역을 찾을 수 없습니다");

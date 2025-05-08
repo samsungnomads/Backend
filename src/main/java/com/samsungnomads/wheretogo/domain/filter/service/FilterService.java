@@ -59,4 +59,14 @@ public class FilterService {
 
         return filterRepository.findByConditionWithPageable(cursorId, condition, pageable);
     }
+
+    @Transactional
+    public void deleteFilter(String username, Long filterId) {
+        Filter filter = filterRepository.findById(filterId).orElseThrow(() -> new BusinessException(ErrorCode.FILTER_NOT_FOUND));
+        Member member = memberRepository.findByLoginId(username).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        MemberFilter memberFilter = memberFilterRepository.findByMemberIdAndFilterId(member.getId(), filter.getId()).orElseThrow(() -> new BusinessException(ErrorCode.FILTER_NOT_OWNER));
+
+        memberFilterRepository.delete(memberFilter);
+    }
 }

@@ -54,4 +54,10 @@ public class FilterController implements FilterControllerDocs {
 
     }
 
+    @DeleteMapping("/private/{filterId}")
+    public ResponseEntity<SuccessResponse<Void>> deleteFilter(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("filterId") Long filterId) {
+        filterService.deleteFilter(userDetails.getUsername(), filterId);
+        return SuccessResponse.of(SuccessCode.FILTER_DELETE, null);
+    }
+
 }

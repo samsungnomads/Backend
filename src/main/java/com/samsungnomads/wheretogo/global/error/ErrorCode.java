@@ -34,6 +34,10 @@ public enum ErrorCode {
     // 필터 관련 오류
     FILTER_NOT_FOUND(HttpStatus.NOT_FOUND, "F001", "필터를 찾을 수 없습니다"),
     FILTER_NOT_OWNER(HttpStatus.UNAUTHORIZED, "F002", "필터를 소유하고 있지 않습니다"),
+    FILTER_NOT_SHARED(HttpStatus.BAD_REQUEST, "F003", "공유되지 않은 필터입니다"),
+    FILTER_ALREADY_DOWNLOADED(HttpStatus.CONFLICT, "F004", "이미 다운로드한 필터입니다"),
+    FILTER_NOT_CREATOR(HttpStatus.FORBIDDEN, "F005", "필터 제작자만 공유 설정을 변경할 수 있습니다"),
+    FILTER_ALREADY_SHARED(HttpStatus.CONFLICT, "F006", "이미 공유 상태인 필터입니다"),
 
     // 지하철역 관련 오류
     STATION_NOT_FOUND(HttpStatus.NOT_FOUND, "S001", "지하철역을 찾을 수 없습니다");

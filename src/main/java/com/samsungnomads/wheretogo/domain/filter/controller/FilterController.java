@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/filter")
 @RequiredArgsConstructor
-public class FilterController implements FilterControllerDocs {
+public class FilterController {
     private final FilterService filterService;
 
     @GetMapping("/private/owns")
@@ -61,5 +61,58 @@ public class FilterController implements FilterControllerDocs {
         filterService.deleteFilter(userDetails.getUsername(), filterId);
         return SuccessResponse.of(SuccessCode.FILTER_DELETE, null);
     }
-
+    
+    /**
+     * 필터 다운로드
+     * 📥 공용 저장소에서 내 저장소로 필터 다운로드
+     */
+    @PostMapping("/download")
+    public ResponseEntity<SuccessResponse<FilterDownloadResponseDto>> downloadFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterDownloadRequestDto requestDto
+    ) {
+        FilterDownloadResponseDto responseDto = filterService.downloadFilter(
+                userDetails.getUsername(),
+                requestDto.getFilterId()
+        );
+        
+        return SuccessResponse.of(SuccessCode.FILTER_DOWNLOAD_SUCCESS, responseDto);
+    }
+    
+    /**
+     * 필터 업로드
+     * 📤 내 저장소에서 공용 저장소로 필터 업로드
+     */
+    @PostMapping("/upload")
+    public ResponseEntity<SuccessResponse<FilterUploadResponseDto>> uploadFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterUploadRequestDto requestDto
+    ) {
+        FilterUploadResponseDto responseDto = filterService.uploadFilter(
+                userDetails.getUsername(),
+                requestDto.getFilterId(),
+                requestDto.getIsShared()
+        );
+        
+        return SuccessResponse.of(SuccessCode.FILTER_UPLOAD_SUCCESS, responseDto);
+    }
+    
+    /**
+     * 필터 생성
+     * 🆕 새로운 필터를 생성하고 내 저장소에 저장
+     */
+    @PostMapping("/save")
+    public ResponseEntity<SuccessResponse<FilterSaveResponseDto>> saveFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterSaveRequestDto requestDto
+    ) {
+        FilterSaveResponseDto responseDto = filterService.createFilter(
+                userDetails.getUsername(),
+                requestDto.getName(),
+                requestDto.getIsShared(),
+                requestDto.getStationIds()
+        );
+        
+        return SuccessResponse.of(SuccessCode.FILTER_SAVE_SUCCESS, responseDto);
+    }
 }

@@ -5,7 +5,6 @@ import com.samsungnomads.wheretogo.domain.station.dto.StationResponseDto;
 import com.samsungnomads.wheretogo.domain.station.service.StationService;
 import com.samsungnomads.wheretogo.global.success.SuccessCode;
 import com.samsungnomads.wheretogo.global.success.SuccessResponse;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/station")
+@RequestMapping("/api/station")
 @RequiredArgsConstructor
 public class StationController implements StationControllerDocs {
 

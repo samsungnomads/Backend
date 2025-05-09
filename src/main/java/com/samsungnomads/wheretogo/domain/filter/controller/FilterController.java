@@ -47,9 +47,11 @@ public class FilterController implements FilterControllerDocs {
             @RequestParam(required = false) Long cursorId,
             @RequestParam(required = false) Integer lastLikes,
             @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+            @RequestParam(required = false) String keyword,
             @PageableDefault(size = 5) Pageable pageable
     ) {
-        Slice<FilterPublicDto> filterPublicDtos = filterService.getPublicFilters(cursorId, new FilterConditionDto(lastLikes, lastUpdatedAt), pageable);
+        FilterConditionDto condition = new FilterConditionDto(lastLikes, lastUpdatedAt, keyword);
+        Slice<FilterPublicDto> filterPublicDtos = filterService.getPublicFilters(cursorId, condition, pageable);
         return SuccessResponse.of(SuccessCode.OK, filterPublicDtos);
 
     }

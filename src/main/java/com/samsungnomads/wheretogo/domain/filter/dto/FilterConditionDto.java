@@ -10,4 +10,5 @@ import java.time.LocalDateTime;
 public class FilterConditionDto {
     private Integer lastLikes;
     private LocalDateTime lastUpdatedAt;
+    private String keyword;
 }

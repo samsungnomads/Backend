@@ -41,28 +41,49 @@ public class FilterCustomRepositoryImpl implements FilterCustomRepository {
     }
 
     private BooleanExpression createWhereCondition(Long cursorId, FilterConditionDto condition, Pageable pageable) {
+        BooleanExpression cursorCondition = buildCursorCondition(cursorId, condition, pageable);
+        BooleanExpression keywordCondition = buildKeywordCondition(condition.getKeyword());
 
-        if (cursorId == null) {
-            return null;
-        }
+        return combineConditions(cursorCondition, keywordCondition);
+    }
+
+
+    private BooleanExpression buildCursorCondition(Long cursorId, FilterConditionDto condition, Pageable pageable) {
+        if (cursorId == null) return null;
 
         String property = getSortOrder(pageable).getProperty();
         Sort.Direction direction = getSortOrder(pageable).getDirection();
 
-        if (property.equals("likes")) {
-            return buildLikesCondition(condition.getLastLikes(), cursorId, direction);
-        } else if (property.equals("updatedAt")) {
-            return buildUpdatedAtCondition(condition.getLastUpdatedAt(), cursorId, direction);
-        } else {
-            return buildIdCondition(cursorId, direction);
+        return switch (property) {
+            case "likes" -> buildLikesCondition(condition.getLastLikes(), cursorId, direction);
+            case "updatedAt" -> buildUpdatedAtCondition(condition.getLastUpdatedAt(), cursorId, direction);
+            default -> buildIdCondition(cursorId, direction);
+        };
+    }
+
+    private BooleanExpression buildKeywordCondition(String keywords) {
+        if (keywords == null || keywords.trim().isEmpty()) {
+            return null;
         }
 
+        String[] keywordArray = keywords.trim().split("\\s+");
+
+        BooleanExpression result = null;
+        for (String keyword : keywordArray) {
+            BooleanExpression condition = filter.name.containsIgnoreCase(keyword);
+            result = (result == null)
+                    ? condition : result.and(condition);
+        }
+
+        return result;
     }
 
-    private Sort.Order getSortOrder(Pageable pageable) {
-        return pageable.getSort().stream().findFirst()
-                .orElse(new Sort.Order(Sort.Direction.DESC, "id")); // 기본 정렬
+    private BooleanExpression combineConditions(BooleanExpression a, BooleanExpression b) {
+        if (a != null && b != null) return a.and(b);
+        if (a != null) return a;
+        return b;
     }
+
 
     private BooleanExpression buildLikesCondition(Integer lastLikes, Long cursorId, Sort.Direction direction) {
         log.info("buildLikesCondition: lastLikes={}, direction={}", lastLikes, direction);
@@ -93,6 +114,11 @@ public class FilterCustomRepositoryImpl implements FilterCustomRepository {
         return direction.isAscending() ?
                 filter.id.gt(cursorId) :
                 filter.id.lt(cursorId);
+    }
+
+    private Sort.Order getSortOrder(Pageable pageable) {
+        return pageable.getSort().stream().findFirst()
+                .orElse(new Sort.Order(Sort.Direction.DESC, "id")); // 기본 정렬
     }
 
 

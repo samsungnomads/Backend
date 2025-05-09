@@ -36,6 +36,9 @@ public class Filter {
     @Column(name = "is_shared")
     private Boolean isShared; // 🔄 공유 여부
 
+    @Column(name = "likes")
+    private Integer likes;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "login_id", referencedColumnName = "login_id", nullable = false)
     private Member creator; // 👤 필터를 제작한 회원

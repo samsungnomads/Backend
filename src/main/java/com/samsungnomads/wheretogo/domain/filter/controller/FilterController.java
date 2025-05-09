@@ -1,21 +1,20 @@
 package com.samsungnomads.wheretogo.domain.filter.controller;
 
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterDetailDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateCreationDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateOwnDto;
+import com.samsungnomads.wheretogo.domain.filter.dto.*;
 import com.samsungnomads.wheretogo.domain.filter.service.FilterService;
 import com.samsungnomads.wheretogo.global.security.dto.UserDetailsImpl;
 import com.samsungnomads.wheretogo.global.success.SuccessCode;
 import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
@@ -41,6 +40,26 @@ public class FilterController implements FilterControllerDocs {
     public ResponseEntity<SuccessResponse<FilterDetailDto>> getFilterDetail(@PathVariable("filterId") Long filterId) {
         FilterDetailDto filterDetailDto = filterService.getFilterDetail(filterId);
         return SuccessResponse.of(SuccessCode.FILTER_DETAIL, filterDetailDto);
+    }
+
+    @GetMapping("/public")
+    public ResponseEntity<SuccessResponse<Slice<FilterPublicDto>>> getPublicFilters(
+            @RequestParam(required = false) Long cursorId,
+            @RequestParam(required = false) Integer lastLikes,
+            @RequestParam(required = false) LocalDateTime lastUpdatedAt,
+            @RequestParam(required = false) String keyword,
+            @PageableDefault(size = 5) Pageable pageable
+    ) {
+        FilterConditionDto condition = new FilterConditionDto(lastLikes, lastUpdatedAt, keyword);
+        Slice<FilterPublicDto> filterPublicDtos = filterService.getPublicFilters(cursorId, condition, pageable);
+        return SuccessResponse.of(SuccessCode.OK, filterPublicDtos);
+
+    }
+
+    @DeleteMapping("/private/{filterId}")
+    public ResponseEntity<SuccessResponse<Void>> deleteFilter(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable("filterId") Long filterId) {
+        filterService.deleteFilter(userDetails.getUsername(), filterId);
+        return SuccessResponse.of(SuccessCode.FILTER_DELETE, null);
     }
 
 }

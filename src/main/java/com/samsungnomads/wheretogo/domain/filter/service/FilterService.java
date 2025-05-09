@@ -1,8 +1,6 @@
 package com.samsungnomads.wheretogo.domain.filter.service;
 
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterDetailDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateCreationDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateOwnDto;
+import com.samsungnomads.wheretogo.domain.filter.dto.*;
 import com.samsungnomads.wheretogo.domain.filter.entity.Filter;
 import com.samsungnomads.wheretogo.domain.filter.repository.FilterRepository;
 import com.samsungnomads.wheretogo.domain.member.entity.Member;
@@ -14,6 +12,8 @@ import com.samsungnomads.wheretogo.global.error.exception.BusinessException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,5 +52,21 @@ public class FilterService {
         Filter filter = filterRepository.findById(filterId).orElseThrow(() -> new BusinessException(ErrorCode.FILTER_NOT_FOUND));
 
         return FilterDetailDto.from(filter);
+    }
+
+    @Transactional
+    public Slice<FilterPublicDto> getPublicFilters(Long cursorId, FilterConditionDto condition, Pageable pageable) {
+
+        return filterRepository.findByConditionWithPageable(cursorId, condition, pageable);
+    }
+
+    @Transactional
+    public void deleteFilter(String username, Long filterId) {
+        Filter filter = filterRepository.findById(filterId).orElseThrow(() -> new BusinessException(ErrorCode.FILTER_NOT_FOUND));
+        Member member = memberRepository.findByLoginId(username).orElseThrow(() -> new BusinessException(ErrorCode.MEMBER_NOT_FOUND));
+
+        MemberFilter memberFilter = memberFilterRepository.findByMemberIdAndFilterId(member.getId(), filter.getId()).orElseThrow(() -> new BusinessException(ErrorCode.FILTER_NOT_OWNER));
+
+        memberFilterRepository.delete(memberFilter);
     }
 }

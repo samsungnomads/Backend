@@ -24,7 +24,8 @@ public enum SuccessCode {
     // 필터 관련
     FILTER_PRIVATE_OWN(HttpStatus.OK, "사용자가 소유한 필터 목록을 성공적으로 조회했습니다."),
     FILTER_PRIVATE_CREATION(HttpStatus.OK, "사용자가 생성한 필터 목록을 성공적으로 조회했습니다."),
-    FILTER_DETAIL(HttpStatus.OK, "필터 상세 정보를 성공적으로 조회했습니다.");
+    FILTER_DETAIL(HttpStatus.OK, "필터 상세 정보를 성공적으로 조회했습니다."),
+    FILTER_DELETE(HttpStatus.OK, "필터를 성공적으로 삭제하였습니다");
 
     private final HttpStatus status;
     private final String message;

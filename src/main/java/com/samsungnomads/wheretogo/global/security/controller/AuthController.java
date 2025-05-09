@@ -1,12 +1,12 @@
 package com.samsungnomads.wheretogo.global.security.controller;
 
-import com.samsungnomads.wheretogo.global.success.SuccessCode;
-import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import com.samsungnomads.wheretogo.global.security.dto.LoginRequestDto;
 import com.samsungnomads.wheretogo.global.security.dto.LogoutRequestDto;
 import com.samsungnomads.wheretogo.global.security.dto.SignUpRequestDto;
 import com.samsungnomads.wheretogo.global.security.jwt.JwtToken;
 import com.samsungnomads.wheretogo.global.security.service.AuthService;
+import com.samsungnomads.wheretogo.global.success.SuccessCode;
+import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @Slf4j
-public class AuthController {
+public class AuthController implements AuthControllerDocs {
     private final AuthService authService;
 
     @PostMapping("/signup")

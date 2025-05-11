@@ -1,9 +1,6 @@
 package com.samsungnomads.wheretogo.domain.filter.controller;
 
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterDetailDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateCreationDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPrivateOwnDto;
-import com.samsungnomads.wheretogo.domain.filter.dto.FilterPublicDto;
+import com.samsungnomads.wheretogo.domain.filter.dto.*;
 import com.samsungnomads.wheretogo.global.security.dto.UserDetailsImpl;
 import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +16,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
@@ -249,5 +247,104 @@ public interface FilterControllerDocs {
     public ResponseEntity<SuccessResponse<Void>> deleteFilter(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable("filterId") Long filterId
+    );
+
+    @Operation(
+            summary = "필터 다운로드",
+            description = "공용 저장소에서 내 저장소로 필터를 다운로드합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "필터 다운로드 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "필터 다운로드 성공 응답 예시",
+                                    summary = "필터 다운로드 성공 시 응답 예시",
+                                    value = """
+                                            {
+                                                "status": 200,
+                                                "message": "필터를 내 저장소로 성공적으로 다운로드했습니다",
+                                                "data": {
+                                                    "filterId": 1,
+                                                    "filterName": "맛집 추천 필터",
+                                                    "creatorNickname": "FoodExplorer",
+                                                    "isShared": true
+                                                }
+                                            }
+                                            """
+                            )
+                    ))
+    })
+    public ResponseEntity<SuccessResponse<FilterDownloadResponseDto>> downloadFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterDownloadRequestDto requestDto
+    );
+    
+    @Operation(
+            summary = "필터 업로드",
+            description = "내 저장소의 필터를 공용 저장소로 업로드(공유)합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "필터 업로드 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "필터 업로드 성공 응답 예시",
+                                    summary = "필터 업로드 성공 시 응답 예시",
+                                    value = """
+                                            {
+                                                "status": 200,
+                                                "message": "필터를 공용 저장소로 성공적으로 업로드했습니다",
+                                                "data": {
+                                                    "filterId": 2,
+                                                    "filterName": "여행지 추천 필터",
+                                                    "isShared": true
+                                                }
+                                            }
+                                            """
+                            )
+                    ))
+    })
+    public ResponseEntity<SuccessResponse<FilterUploadResponseDto>> uploadFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterUploadRequestDto requestDto
+    );
+    
+    @Operation(
+            summary = "필터 생성",
+            description = "새로운 필터를 생성하고 내 저장소에 저장합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "필터 생성 성공",
+                    content = @Content(
+                            mediaType = "application/json",
+                            examples = @ExampleObject(
+                                    name = "필터 생성 성공 응답 예시",
+                                    summary = "필터 생성 성공 시 응답 예시",
+                                    value = """
+                                            {
+                                                "status": 201,
+                                                "message": "필터를 성공적으로 생성하였습니다",
+                                                "data": {
+                                                    "filterId": 3,
+                                                    "name": "새 여행지 필터",
+                                                    "isShared": false,
+                                                    "stationIds": [1, 2, 3, 4],
+                                                    "createdAt": "2023-10-01T14:30:00"
+                                                }
+                                            }
+                                            """
+                            )
+                    ))
+    })
+    public ResponseEntity<SuccessResponse<FilterSaveResponseDto>> saveFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterSaveRequestDto requestDto
     );
 }

@@ -76,4 +76,12 @@ public class Filter {
         if (name != null) this.name = name;
         if (isShared != null) this.isShared = isShared;
     }
+
+    /**
+     * 좋아요 수 업데이트
+     * @param likes 새로운 좋아요 수
+     */
+    public void updateLikes(Integer likes) {
+        this.likes = likes;
+    }
 }

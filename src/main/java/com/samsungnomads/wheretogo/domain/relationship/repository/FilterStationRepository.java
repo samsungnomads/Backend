@@ -31,4 +31,9 @@ public interface FilterStationRepository extends JpaRepository<FilterStation, Fi
      * ✅ 특정 필터와 역 간의 관계가 존재하는지 확인
      */
     boolean existsByFilterIdAndStationId(Long filterId, Long stationId);
+
+    /**
+     * 필터 ID로 모든 필터-역 관계 삭제
+     */
+    void deleteAllByFilterId(Long filterId);
 } 

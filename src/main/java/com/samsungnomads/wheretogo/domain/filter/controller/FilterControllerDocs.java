@@ -1,12 +1,14 @@
 package com.samsungnomads.wheretogo.domain.filter.controller;
 
 import com.samsungnomads.wheretogo.domain.filter.dto.*;
+import com.samsungnomads.wheretogo.global.error.ErrorResponse;
 import com.samsungnomads.wheretogo.global.security.dto.UserDetailsImpl;
 import com.samsungnomads.wheretogo.global.success.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -347,4 +349,52 @@ public interface FilterControllerDocs {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestBody FilterSaveRequestDto requestDto
     );
+
+    /**
+     * 필터 좋아요 API
+     * 필터에 좋아요를 추가하거나 취소합니다.
+     *
+     * @param userDetails 인증된 사용자 정보
+     * @param request 필터 좋아요 요청 정보
+     * @return 좋아요 처리 결과 및 변경된 좋아요 수
+     */
+    @Operation(summary = "필터 좋아요", description = "필터에 좋아요를 추가합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "좋아요 처리 성공",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "필터 또는 사용자 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    ResponseEntity<SuccessResponse<FilterLikeResponseDto>> toggleFilterLike(
+            @Parameter(hidden = true) UserDetailsImpl userDetails,
+            @RequestBody FilterLikeRequest request);
+
+    /**
+     * 필터 수정 API
+     * 내가 제작하거나 공유받은 필터를 수정합니다.
+     *
+     * @param userDetails 인증된 사용자 정보
+     * @param request 필터 수정 요청 정보
+     * @return 수정된 필터 정보
+     */
+    @Operation(summary = "필터 수정", description = "내가 제작하거나 공유받은 필터를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "필터 수정 성공",
+                    content = @Content(schema = @Schema(implementation = SuccessResponse.class))),
+            @ApiResponse(responseCode = "400", description = "잘못된 요청",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "401", description = "인증 실패",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "403", description = "권한 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "필터 또는 사용자 찾을 수 없음",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    ResponseEntity<SuccessResponse<FilterEditResponseDto>> editFilter(
+            @Parameter(hidden = true) UserDetailsImpl userDetails,
+            @RequestBody FilterEditRequest request);
 }

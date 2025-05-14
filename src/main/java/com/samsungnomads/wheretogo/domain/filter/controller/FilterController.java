@@ -123,4 +123,34 @@ public class FilterController implements FilterControllerDocs {
         
         return SuccessResponse.of(SuccessCode.FILTER_SAVE_SUCCESS, responseDto);
     }
+
+    /**
+     * 필터 좋아요 기능
+     * 필터에 좋아요를 추가합니다.
+     */
+    @PostMapping("/like")
+    @Override
+    public ResponseEntity<SuccessResponse<FilterLikeResponseDto>> toggleFilterLike(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterLikeRequest request) {
+        FilterLikeResponseDto responseDto = filterService.toggleFilterLike(userDetails.getUsername(), request);
+        return SuccessResponse.of(SuccessCode.OK, responseDto);
+    }
+
+    /**
+     * 필터 수정
+     * 내가 제작한/공유받은 필터를 수정합니다.
+     */
+    @PostMapping("/edit")
+    @Override
+    public ResponseEntity<SuccessResponse<FilterEditResponseDto>> editFilter(
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @RequestBody FilterEditRequest request) {
+        FilterEditResponseDto responseDto = filterService.editFilter(
+                userDetails.getUsername(),
+                request
+        );
+        
+        return SuccessResponse.of(SuccessCode.FILTER_EDIT_SUCCESS, responseDto);
+    }
 }

@@ -24,13 +24,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 
         String uri = ((HttpServletRequest) request).getRequestURI();
         log.debug("JWT Authentication Filter URI: {}", uri);
-        
+
         // 인증이 필요 없는 경로는 필터를 통과시킴 🛑
-        if (uri.startsWith("/api/auth/login") || 
-            uri.startsWith("/api/auth/signup") || 
-            uri.startsWith("/swagger-ui") || 
-            uri.startsWith("/v3/api-docs") || 
-            uri.startsWith("/api-docs")) {
+        if (uri.startsWith("/api/auth") ||
+                uri.startsWith("/api/test") ||
+                uri.startsWith("/api/station") ||
+                uri.startsWith("/swagger-ui") ||
+                uri.startsWith("/v3/api-docs") ||
+                uri.startsWith("/api-docs")) {
             chain.doFilter(request, response);
             return;
         }

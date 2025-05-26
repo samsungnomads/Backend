@@ -29,7 +29,7 @@ public class KricApiService {
     public List<KricApiResponseDto.StationInfo> fetchStationInfoList(Line line) {
 
         String url = UriComponentsBuilder.fromUriString(kricApiUrl)
-                .queryParam("serviceKey", kricApiKey)
+                .queryParam("serviceKey", "$2a$10$.P03IDI0V3/IewJhrarByeBimfbBi.doplIJyt9zJ/Ta5h0j9HQPi")
                 .queryParam("format", "json")
                 .queryParam("mreaWideCd", "01")
                 .queryParam("lnCd", line.getCode())

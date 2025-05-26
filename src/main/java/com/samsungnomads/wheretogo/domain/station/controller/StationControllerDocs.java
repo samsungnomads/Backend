@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Map;
 
-@Tag(name = "Station", description = "지하철역 관련 API")
+@Tag(name = "Station", description = "지하철역 관련 API (AccessToken이 필요하지 않습니다)")
 public interface StationControllerDocs {
 
     @Operation(

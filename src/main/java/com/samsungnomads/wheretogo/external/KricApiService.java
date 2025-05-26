@@ -58,6 +58,9 @@ public class KricApiService {
 
             if (responseDto.getBody() == null) {
                 log.warn("[KRIC] 응답 body, List<StationInfo>가 null 입니다. lineCode: {}", line.getCode());
+                log.warn("[KRIC] kricApiUrl {}", kricApiUrl);
+                log.warn("[KRIC] kricApiKey {}", kricApiKey);
+
                 return List.of();
             }
 
